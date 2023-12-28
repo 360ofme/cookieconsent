@@ -37,7 +37,8 @@ import {
     createConsentModal,
     createPreferencesModal,
     generateHtml,
-    createMainContainer
+    createMainContainer,
+    createQRModal
 } from './modals/index';
 
 import {
@@ -68,7 +69,8 @@ import {
     OPT_OUT_MODE,
     CONSENT_MODAL_NAME,
     ARIA_HIDDEN,
-    PREFERENCES_MODAL_NAME
+    PREFERENCES_MODAL_NAME,
+    QR_MODAL_NAME
 } from '../utils/constants';
 import { localStorageManager } from '../utils/localstorage';
 
@@ -286,6 +288,45 @@ export const showPreferences = () => {
     _log('CookieConsent [TOGGLE]: show preferencesModal');
 
     fireEvent(globalObj._customEvents._onModalShow, PREFERENCES_MODAL_NAME);
+};
+
+/**
+ * Show QR Modal
+ */
+export const showQr = () => {
+    console.log('shooooow kike showww');
+    const state = globalObj._state;
+
+    if (state._qrModalVisible)
+        return;
+    console.log('state qr visible:', state);
+    if (!state._qrModalExists)
+        createQRModal(miniAPI, createMainContainer);
+
+    state._qrModalVisible = true;
+
+    // If there is no consent-modal, keep track of the last focused elem.
+    if (!state._consentModalVisible) {
+        state._lastFocusedElemBeforeModal = getActiveElement();
+    } else {
+        state._lastFocusedModalElement = getActiveElement();
+    }
+
+    focusAfterTransition(globalObj._dom._pm, 2);
+
+    addClass(globalObj._dom._htmlDom, TOGGLE_PREFERENCES_MODAL_CLASS);
+    setAttribute(globalObj._dom._pm, ARIA_HIDDEN, 'false');
+
+    /**
+     * Set focus to preferencesModal
+     */
+    setTimeout(() => {
+        focus(globalObj._dom._pmDivTabindex);
+    }, 100);
+
+    _log('CookieConsent [TOGGLE]: show qrModal');
+
+    fireEvent(globalObj._customEvents._onModalShow, QR_MODAL_NAME);
 };
 
 /**

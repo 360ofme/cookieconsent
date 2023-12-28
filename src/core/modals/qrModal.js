@@ -16,18 +16,16 @@ import {
 } from '../../utils/general';
 
 import {
-    CONSENT_MODAL_NAME,
+    QR_MODAL_NAME,
     DIV_TAG,
     ARIA_HIDDEN,
     BUTTON_TAG,
-    BTN_GROUP_CLASS,
     CLICK_EVENT,
-    DATA_ROLE
+    BTN_GROUP_CLASS
 } from '../../utils/constants';
 
 import { guiManager } from '../../utils/gui-manager';
 import { createPreferencesModal } from './preferencesModal';
-import { createQRModal }  from './qrModal';
 
 /**
  * @callback CreateMainContainer
@@ -36,24 +34,25 @@ import { createQRModal }  from './qrModal';
 /**
  * @returns {HTMLSpanElement}
  */
-const createFocusSpan = () => {
+/*const createFocusSpan = () => {
     const span = createNode('span');
 
     if (!globalObj._dom._focusSpan)
         globalObj._dom._focusSpan = span;
 
     return span;
-};
+};*/
 
 /**
- * Create consent modal and append it to "cc-main" el.
+ * Create qr modal and append it to "cc-main" el.
  * @param {import("../global").Api} api
  * @param {CreateMainContainer} createMainContainer
  */
-export const createConsentModal = (api, createMainContainer) => {
+export const createQRModal = (api, createMainContainer) => {
     const state = globalObj._state;
     const dom = globalObj._dom;
-    const {hide, showPreferences, acceptCategory, showQr} = api;
+    const {hide} = api;
+
 
     /**
      * @type {import("../global").ConsentModalOptions}
@@ -70,7 +69,7 @@ export const createConsentModal = (api, createMainContainer) => {
     //if (!consentModalData)
     //    return;
 
-    console.log('la data del consent modal:', consentModalData);
+    console.log('la data del QR modal:', consentModalData);
     const acceptAllBtnData = consentModalData.acceptAllBtn,
         acceptNecessaryBtnData = consentModalData.acceptNecessaryBtn,
         showPreferencesBtnData = consentModalData.showPreferencesBtn,
@@ -84,13 +83,12 @@ export const createConsentModal = (api, createMainContainer) => {
      */
     const acceptAndHide = (categories) => {
         hide();
-        acceptCategory(categories);
-        console.log('Cristian is editing');
-
+        //acceptCategory(categories);
     };
 
     // Create modal if it doesn't exist
     if (!dom._cmContainer) {
+        console.log('entro al create modal if it doesnt exist');
         dom._cmContainer = createNode(DIV_TAG);
         dom._cm = createNode(DIV_TAG);
         dom._cmBody = createNode(DIV_TAG);
@@ -183,7 +181,7 @@ export const createConsentModal = (api, createMainContainer) => {
         dom._cmDescription.innerHTML = description;
     }
 
-    if (acceptAllBtnData) {
+    /*if (acceptAllBtnData) {
         if (!dom._cmAcceptAllBtn) {
             dom._cmAcceptAllBtn = createNode(BUTTON_TAG);
             appendChild(dom._cmAcceptAllBtn, createFocusSpan());
@@ -193,19 +191,11 @@ export const createConsentModal = (api, createMainContainer) => {
             /*addEvent(dom._cmAcceptAllBtn, CLICK_EVENT, () => {
                 _log('CookieConsent [ACCEPT]: all');
                 acceptAndHide('all');
-            });*/
-
-            addEvent(dom._cmAcceptAllBtn, 'mouseenter', () => {
-                if (!state._qrModalExists) {
-                    createQRModal(api, createMainContainer);
-                    console.log('MOuese enter kike');
-                }
             });
-            addEvent(dom._cmAcceptAllBtn, CLICK_EVENT, showPreferences);
         }
 
         dom._cmAcceptAllBtn.firstElementChild.innerHTML = acceptAllBtnData;
-    }
+    }*/
 
     /*if (acceptNecessaryBtnData) {
         if (!dom._cmAcceptNecessaryBtn) {
@@ -214,7 +204,7 @@ export const createConsentModal = (api, createMainContainer) => {
             addClassCm(dom._cmAcceptNecessaryBtn, 'btn');
             setAttribute(dom._cmAcceptNecessaryBtn, DATA_ROLE, 'necessary');
 
-            addEvent(dom._cmAcceptNecessaryBtn, CLICK_EVENT, () => {
+            /*addEvent(dom._cmAcceptNecessaryBtn, CLICK_EVENT, () => {
                 _log('CookieConsent [ACCEPT]: necessary');
                 acceptAndHide([]);
             });
@@ -222,24 +212,6 @@ export const createConsentModal = (api, createMainContainer) => {
 
         dom._cmAcceptNecessaryBtn.firstElementChild.innerHTML = acceptNecessaryBtnData;
     }*/
-
-    if (showPreferencesBtnData) {
-        if (!dom._cmShowPreferencesBtn) {
-            dom._cmShowPreferencesBtn = createNode(BUTTON_TAG);
-            appendChild(dom._cmShowPreferencesBtn, createFocusSpan());
-            addClassCm(dom._cmShowPreferencesBtn, 'btn');
-            addClassCm(dom._cmShowPreferencesBtn, 'btn--secondary');
-            setAttribute(dom._cmShowPreferencesBtn, DATA_ROLE, 'show');
-
-            addEvent(dom._cmShowPreferencesBtn, 'mouseenter', () => {
-                if (!state._preferencesModalExists)
-                    createPreferencesModal(api, createMainContainer);
-            });
-            addEvent(dom._cmShowPreferencesBtn, CLICK_EVENT, showPreferences);
-        }
-
-        dom._cmShowPreferencesBtn.firstElementChild.innerHTML = showPreferencesBtnData;
-    }
 
     if (!dom._cmBtnGroup) {
         dom._cmBtnGroup = createNode(DIV_TAG);
@@ -288,9 +260,9 @@ export const createConsentModal = (api, createMainContainer) => {
     if (!state._consentModalExists) {
         state._consentModalExists = true;
 
-        _log('CookieConsent [HTML] created', CONSENT_MODAL_NAME);
+        _log('CookieConsent [HTML] created', QR_MODAL_NAME);
 
-        fireEvent(globalObj._customEvents._onModalReady, CONSENT_MODAL_NAME, dom._cm);
+        fireEvent(globalObj._customEvents._onModalReady, QR_MODAL_NAME, dom._cm);
         createMainContainer(api);
         appendChild(dom._ccMain, dom._cmContainer);
         handleFocusTrap(dom._cm);
