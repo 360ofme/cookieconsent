@@ -4,7 +4,7 @@ import {
     _log,
     createNode,
     addClass,
-    addClassCm,
+    addClassPm,
     setAttribute,
     appendChild,
     addEvent,
@@ -87,29 +87,30 @@ export const createQRModal = (api, createMainContainer) => {
     };
 
     // Create modal if it doesn't exist
-    if (!dom._cmContainer) {
+    console.log('kike check si cmContainer exist:', dom._qrmContainer);
+    if (!dom._qrmContainer) {
         console.log('entro al create modal if it doesnt exist');
-        dom._cmContainer = createNode(DIV_TAG);
-        dom._cm = createNode(DIV_TAG);
-        dom._cmBody = createNode(DIV_TAG);
-        dom._cmTexts = createNode(DIV_TAG);
-        dom._cmBtns = createNode(DIV_TAG);
+        dom._qrmContainer = createNode(DIV_TAG);
+        dom._qrm = createNode(DIV_TAG);
+        dom._qrmBody = createNode(DIV_TAG);
+        dom._qrmTexts = createNode(DIV_TAG);
+        dom._qrmBtns = createNode(DIV_TAG);
 
-        addClass(dom._cmContainer, 'cm-wrapper');
-        addClass(dom._cm, 'cm');
-        addClassCm(dom._cmBody, 'body');
-        addClassCm(dom._cmTexts, 'texts');
-        addClassCm(dom._cmBtns, 'btns');
+        addClass(dom._qrmContainer, 'pm-wrapper');
+        addClass(dom._qrm, 'pm');
+        addClassPm(dom._qrmBody, 'body');
+        addClassPm(dom._qrmTexts, 'texts');
+        addClassPm(dom._qrmBtns, 'btns');
 
-        setAttribute(dom._cm, 'role', 'dialog');
-        setAttribute(dom._cm, 'aria-modal', 'true');
-        setAttribute(dom._cm, ARIA_HIDDEN, 'false');
-        setAttribute(dom._cm, 'aria-describedby', 'cm__desc');
+        setAttribute(dom._qrm, 'role', 'dialog');
+        setAttribute(dom._qrm, 'aria-modal', 'true');
+        setAttribute(dom._qrm, ARIA_HIDDEN, 'false');
+        setAttribute(dom._qrm, 'aria-describedby', 'qrm__desc');
 
         if (consentModalLabelValue)
-            setAttribute(dom._cm, 'aria-label', consentModalLabelValue);
+            setAttribute(dom._qrm, 'aria-label', consentModalLabelValue);
         else if (consentModalTitleValue)
-            setAttribute(dom._cm, 'aria-labelledby', 'cm__title');
+            setAttribute(dom._qrm, 'aria-labelledby', 'pm__title');
 
         const
             boxLayout = 'box',
@@ -122,42 +123,42 @@ export const createQRModal = (api, createMainContainer) => {
          * Close icon-button (visible only in the 'box' layout)
          */
         if (consentModalTitleValue && closeIconLabelData && isBoxLayout) {
-            if (!dom._cmCloseIconBtn) {
-                dom._cmCloseIconBtn = createNode(BUTTON_TAG);
-                dom._cmCloseIconBtn.innerHTML = getSvgIcon();
-                addClassCm(dom._cmCloseIconBtn, 'btn');
-                addClassCm(dom._cmCloseIconBtn, 'btn--close');
-                addEvent(dom._cmCloseIconBtn, CLICK_EVENT, () => {
+            if (!dom._qrmCloseIconBtn) {
+                dom._qrmCloseIconBtn = createNode(BUTTON_TAG);
+                dom._qrmCloseIconBtn.innerHTML = getSvgIcon();
+                addClassPm(dom._qrmCloseIconBtn, 'btn');
+                addClassPm(dom._qrmCloseIconBtn, 'btn--close');
+                addEvent(dom._qrmCloseIconBtn, CLICK_EVENT, () => {
                     _log('CookieConsent [ACCEPT]: necessary');
                     acceptAndHide([]);
                 });
-                appendChild(dom._cmBody, dom._cmCloseIconBtn);
+                appendChild(dom._qrmBody, dom._qrmCloseIconBtn);
             }
 
-            setAttribute(dom._cmCloseIconBtn, 'aria-label', closeIconLabelData);
+            setAttribute(dom._qrmCloseIconBtn, 'aria-label', closeIconLabelData);
         }
 
-        appendChild(dom._cmBody, dom._cmTexts);
+        appendChild(dom._qrmBody, dom._qrmTexts);
 
         if (acceptAllBtnData || acceptNecessaryBtnData || showPreferencesBtnData)
-            appendChild(dom._cmBody, dom._cmBtns);
+            appendChild(dom._qrmBody, dom._qrmBtns);
 
-        dom._cmDivTabindex = createNode(DIV_TAG);
-        setAttribute(dom._cmDivTabindex, 'tabIndex', -1);
-        appendChild(dom._cm, dom._cmDivTabindex);
+        dom._qrmDivTabindex = createNode(DIV_TAG);
+        setAttribute(dom._qrmDivTabindex, 'tabIndex', -1);
+        appendChild(dom._qrm, dom._qrmDivTabindex);
 
-        appendChild(dom._cm, dom._cmBody);
-        appendChild(dom._cmContainer, dom._cm);
+        appendChild(dom._qrm, dom._qrmBody);
+        appendChild(dom._qrmContainer, dom._qrm);
     }
 
     if (consentModalTitleValue) {
-        if (!dom._cmTitle) {
-            dom._cmTitle = createNode('h2');
-            dom._cmTitle.className = dom._cmTitle.id = 'cm__title';
-            appendChild(dom._cmTexts, dom._cmTitle);
+        if (!dom._qrmTitle) {
+            dom._qrmTitle = createNode('h2');
+            dom._qrmTitle.className = dom._qrmTitle.id = 'pm__title';
+            appendChild(dom._qrmTexts, dom._qrmTitle);
         }
 
-        dom._cmTitle.innerHTML = consentModalTitleValue;
+        dom._qrmTitle.innerHTML = consentModalTitleValue;
     }
 
     let description = consentModalData.description;
@@ -172,13 +173,13 @@ export const createQRModal = (api, createMainContainer) => {
             );
         }
 
-        if (!dom._cmDescription) {
-            dom._cmDescription = createNode('p');
-            dom._cmDescription.className = dom._cmDescription.id = 'cm__desc';
-            appendChild(dom._cmTexts, dom._cmDescription);
+        if (!dom._qrmDescription) {
+            dom._qrmDescription = createNode('p');
+            dom._qrmDescription.className = dom._qrmDescription.id = 'pm__desc';
+            appendChild(dom._qrmTexts, dom._qrmDescription);
         }
 
-        dom._cmDescription.innerHTML = description;
+        dom._qrmDescription.innerHTML = description;
     }
 
     /*if (acceptAllBtnData) {
@@ -213,67 +214,67 @@ export const createQRModal = (api, createMainContainer) => {
         dom._cmAcceptNecessaryBtn.firstElementChild.innerHTML = acceptNecessaryBtnData;
     }*/
 
-    if (!dom._cmBtnGroup) {
-        dom._cmBtnGroup = createNode(DIV_TAG);
-        addClassCm(dom._cmBtnGroup, BTN_GROUP_CLASS);
+    /*if (!dom._qrmBtnGroup) {
+        dom._qrmBtnGroup = createNode(DIV_TAG);
+        addClassPm(dom._qrmBtnGroup, BTN_GROUP_CLASS);
 
-        acceptAllBtnData && appendChild(dom._cmBtnGroup, dom._cmAcceptAllBtn);
-        acceptNecessaryBtnData && appendChild(dom._cmBtnGroup, dom._cmAcceptNecessaryBtn);
+        acceptAllBtnData && appendChild(dom._qrmBtnGroup, dom._qrmAcceptAllBtn);
+        acceptNecessaryBtnData && appendChild(dom._qrmBtnGroup, dom._qrmAcceptNecessaryBtn);
 
-        (acceptAllBtnData || acceptNecessaryBtnData) && appendChild(dom._cmBody, dom._cmBtnGroup);
-        appendChild(dom._cmBtns, dom._cmBtnGroup);
+        (acceptAllBtnData || acceptNecessaryBtnData) && appendChild(dom._qrmBody, dom._qrmBtnGroup);
+        appendChild(dom._qrmBtns, dom._qrmBtnGroup);
     }
 
-    if (dom._cmShowPreferencesBtn && !dom._cmBtnGroup2) {
-        dom._cmBtnGroup2 = createNode(DIV_TAG);
+    if (dom._qrmShowPreferencesBtn && !dom._qrmBtnGroup2) {
+        dom._qrmBtnGroup2 = createNode(DIV_TAG);
 
-        if ((!dom._cmAcceptNecessaryBtn || !dom._cmAcceptAllBtn)) {
-            appendChild(dom._cmBtnGroup, dom._cmShowPreferencesBtn);
-            addClassCm(dom._cmBtnGroup, BTN_GROUP_CLASS + '--uneven');
+        if ((!dom._qrmAcceptNecessaryBtn || !dom._qrmAcceptAllBtn)) {
+            appendChild(dom._qrmBtnGroup, dom._qrmShowPreferencesBtn);
+            addClassPm(dom._qrmBtnGroup, BTN_GROUP_CLASS + '--uneven');
         }else {
-            addClassCm(dom._cmBtnGroup2, BTN_GROUP_CLASS);
-            appendChild(dom._cmBtnGroup2, dom._cmShowPreferencesBtn);
-            appendChild(dom._cmBtns, dom._cmBtnGroup2);
+            addClassPm(dom._qrmBtnGroup2, BTN_GROUP_CLASS);
+            appendChild(dom._qrmBtnGroup2, dom._qrmShowPreferencesBtn);
+            appendChild(dom._qrmBtns, dom._qrmBtnGroup2);
         }
-    }
+    }*/
 
-    if (footerData) {
-        if (!dom._cmFooterLinksGroup) {
+    /*if (footerData) {
+        if (!dom._qrmFooterLinksGroup) {
             let _consentModalFooter = createNode(DIV_TAG);
             let _consentModalFooterLinks = createNode(DIV_TAG);
             dom._cmFooterLinksGroup = createNode(DIV_TAG);
 
-            addClassCm(_consentModalFooter, 'footer');
-            addClassCm(_consentModalFooterLinks, 'links');
-            addClassCm(dom._cmFooterLinksGroup, 'link-group');
+            addClassPm(_consentModalFooter, 'footer');
+            addClassPm(_consentModalFooterLinks, 'links');
+            //addClassPm(dom._qrmFooterLinksGroup, 'link-group');
 
-            appendChild(_consentModalFooterLinks, dom._cmFooterLinksGroup);
+            appendChild(_consentModalFooterLinks, dom._qrmFooterLinksGroup);
             appendChild(_consentModalFooter, _consentModalFooterLinks);
-            appendChild(dom._cm, _consentModalFooter);
+            appendChild(dom._qrm, _consentModalFooter);
         }
 
-        dom._cmFooterLinksGroup.innerHTML = footerData;
-    }
+        dom._qrmFooterLinksGroup.innerHTML = footerData;
+    }*/
 
     guiManager(0);
 
-    if (!state._consentModalExists) {
-        state._consentModalExists = true;
+    if (!state._qrModalExists) {
+        state._qrModalExists = true;
 
         _log('CookieConsent [HTML] created', QR_MODAL_NAME);
 
-        fireEvent(globalObj._customEvents._onModalReady, QR_MODAL_NAME, dom._cm);
+        fireEvent(globalObj._customEvents._onModalReady, QR_MODAL_NAME, dom._qrm);
         createMainContainer(api);
-        appendChild(dom._ccMain, dom._cmContainer);
-        handleFocusTrap(dom._cm);
+        appendChild(dom._ccMain, dom._qrmContainer);
+        handleFocusTrap(dom._qrm);
 
         /**
          * Enable transition
          */
-        setTimeout(() => addClass(dom._cmContainer, 'cc--anim'), 100);
+        setTimeout(() => addClass(dom._qrmContainer, 'cc--anim'), 100);
     }
 
-    getModalFocusableData(1);
+    getModalFocusableData(3);
 
-    addDataButtonListeners(dom._cmBody, api, createPreferencesModal, createMainContainer);
+    addDataButtonListeners(dom._qrmBody, api, createPreferencesModal, createMainContainer);
 };

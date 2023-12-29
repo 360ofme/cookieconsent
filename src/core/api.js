@@ -66,6 +66,7 @@ import {
     TOGGLE_CONSENT_MODAL_CLASS,
     TOGGLE_DISABLE_INTERACTION_CLASS,
     TOGGLE_PREFERENCES_MODAL_CLASS,
+    TOGGLE_QR_MODAL_CLASS,
     OPT_OUT_MODE,
     CONSENT_MODAL_NAME,
     ARIA_HIDDEN,
@@ -312,16 +313,16 @@ export const showQr = () => {
         state._lastFocusedModalElement = getActiveElement();
     }
 
-    focusAfterTransition(globalObj._dom._pm, 2);
+    focusAfterTransition(globalObj._dom._qrm, 3);
 
-    addClass(globalObj._dom._htmlDom, TOGGLE_PREFERENCES_MODAL_CLASS);
-    setAttribute(globalObj._dom._pm, ARIA_HIDDEN, 'false');
+    addClass(globalObj._dom._htmlDom, TOGGLE_QR_MODAL_CLASS);
+    setAttribute(globalObj._dom._qrm, ARIA_HIDDEN, 'false');
 
     /**
      * Set focus to preferencesModal
      */
     setTimeout(() => {
-        focus(globalObj._dom._pmDivTabindex);
+        focus(globalObj._dom._qrmDivTabindex);
     }, 100);
 
     _log('CookieConsent [TOGGLE]: show qrModal');
@@ -405,7 +406,8 @@ var miniAPI = {
     hide,
     showPreferences,
     hidePreferences,
-    acceptCategory
+    acceptCategory,
+    showQr
 };
 
 /**

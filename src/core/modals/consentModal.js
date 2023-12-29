@@ -60,10 +60,10 @@ export const createConsentModal = (api, createMainContainer) => {
      */
     const consentModalData = {
         acceptAllBtn: 'Use 360ofme',
-        acceptNecessaryBtn: '',
+        acceptNecessaryBtn: 'Just neccesary',
         description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip.',
         footer: '<a href="#link">Privacy Policy</a>\n<a href="#link">Terms and conditions</a>',
-        showPreferencesBtn: '',
+        showPreferencesBtn: 'Show Preferences',
         title: 'Hello kike, it\'s cookie time!'
     };
 
@@ -201,13 +201,13 @@ export const createConsentModal = (api, createMainContainer) => {
                     console.log('MOuese enter kike');
                 }
             });
-            addEvent(dom._cmAcceptAllBtn, CLICK_EVENT, showPreferences);
+            addEvent(dom._cmAcceptAllBtn, CLICK_EVENT, showQr);
         }
 
         dom._cmAcceptAllBtn.firstElementChild.innerHTML = acceptAllBtnData;
     }
 
-    /*if (acceptNecessaryBtnData) {
+    if (acceptNecessaryBtnData) {
         if (!dom._cmAcceptNecessaryBtn) {
             dom._cmAcceptNecessaryBtn = createNode(BUTTON_TAG);
             appendChild(dom._cmAcceptNecessaryBtn, createFocusSpan());
@@ -221,7 +221,7 @@ export const createConsentModal = (api, createMainContainer) => {
         }
 
         dom._cmAcceptNecessaryBtn.firstElementChild.innerHTML = acceptNecessaryBtnData;
-    }*/
+    }
 
     if (showPreferencesBtnData) {
         if (!dom._cmShowPreferencesBtn) {

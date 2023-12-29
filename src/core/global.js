@@ -40,6 +40,7 @@ import { COOKIE_NAME, OPT_IN_MODE } from '../utils/constants';
  * @property {HTMLElement} _ccMain
  * @property {HTMLElement} _cmContainer
  * @property {HTMLElement} _pmContainer
+ * @property {HTMLElement} _qrmContainer
  *
  * @property {HTMLElement} _cm
  * @property {HTMLElement} _cmBody
@@ -66,6 +67,13 @@ import { COOKIE_NAME, OPT_IN_MODE } from '../utils/constants';
  * @property {HTMLElement} _pmAcceptAllBtn
  * @property {HTMLElement} _pmAcceptNecessaryBtn
  * @property {HTMLElement} _pmSavePreferencesBtn
+ * 
+ * @property {HTMLElement} _qr
+ * @property {HTMLElement} _qrHeader
+ * @property {HTMLElement} _qrTitle
+ * @property {HTMLElement} _qrCloseBtn
+ * @property {HTMLElement} _qrBody
+ * @property {HTMLElement} _qrFooter
  *
  * @property {Object.<string, HTMLInputElement>} _categoryCheckboxInputs
  * @property {Object.<string, ServiceToggle>} _serviceCheckboxInputs
@@ -73,6 +81,7 @@ import { COOKIE_NAME, OPT_IN_MODE } from '../utils/constants';
  * // Used to properly restore focus when modal is closed
  * @property {HTMLSpanElement} _focusSpan
  * @property {HTMLSpanElement} _pmFocusSpan
+ * @property {HTMLSpanElement} _qrmFocusSpan
  */
 
 /**
@@ -265,6 +274,7 @@ export class GlobalState {
 
             /** @type {HTMLElement[]} **/ _cmFocusableElements : [],
             /** @type {HTMLElement[]} **/ _pmFocusableElements : [],
+            /** @type {HTMLElement[]} **/ _qrmFocusableElements : [],
 
             /**
             * Keep track of enabled/disabled categories
