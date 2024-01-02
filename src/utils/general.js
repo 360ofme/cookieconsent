@@ -123,6 +123,12 @@ export const addClass = (elem, className) => elem.classList.add(className);
 
 /**
  * @param {HTMLElement} elem
+ * @param {string} id
+ */
+export const addId = (elem, id) => elem.id = id;
+
+/**
+ * @param {HTMLElement} elem
  * @param {string} className
  */
 export const addClassCm = (elem, className) => addClass(elem, 'cm__' + className);
@@ -131,6 +137,11 @@ export const addClassCm = (elem, className) => addClass(elem, 'cm__' + className
  * @param {string} className
  */
 export const addClassPm = (elem, className) => addClass(elem, 'pm__' + className);
+/**
+ * @param {HTMLElement} elem
+ * @param {string} className
+ */
+export const addClassQrm = (elem, className) => addClass(elem, 'qrm__' + className);
 
 /**
  * @param {HTMLElement} elem

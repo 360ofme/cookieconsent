@@ -4,7 +4,8 @@ import {
     _log,
     createNode,
     addClass,
-    addClassPm,
+    addId,
+    addClassQrm,
     setAttribute,
     appendChild,
     addEvent,
@@ -20,8 +21,7 @@ import {
     DIV_TAG,
     ARIA_HIDDEN,
     BUTTON_TAG,
-    CLICK_EVENT,
-    BTN_GROUP_CLASS
+    CLICK_EVENT
 } from '../../utils/constants';
 
 import { guiManager } from '../../utils/gui-manager';
@@ -91,26 +91,35 @@ export const createQRModal = (api, createMainContainer) => {
     if (!dom._qrmContainer) {
         console.log('entro al create modal if it doesnt exist');
         dom._qrmContainer = createNode(DIV_TAG);
+        addClass(dom._qrmContainer, 'qrm-wrapper');
+
+        const qrmOverlay = createNode('div');
+        addClass(qrmOverlay, 'qrm-overlay');
+        appendChild(dom._qrmContainer, qrmOverlay);
+
+        // QR modal
         dom._qrm = createNode(DIV_TAG);
+        addClass(dom._qrm, 'qrm');
+        addId(dom._qrm, 'qrcode');
+        setAttribute(dom._qrm, 'role', 'dialog');
+        setAttribute(dom._qrm, ARIA_HIDDEN, true);
+        setAttribute(dom._qrm, 'aria-modal', true);
+        setAttribute(dom._qrm, 'aria-labelledby', 'qrm__title');
+
         dom._qrmBody = createNode(DIV_TAG);
         dom._qrmTexts = createNode(DIV_TAG);
         dom._qrmBtns = createNode(DIV_TAG);
 
-        addClass(dom._qrmContainer, 'pm-wrapper');
-        addClass(dom._qrm, 'pm');
-        addClassPm(dom._qrmBody, 'body');
-        addClassPm(dom._qrmTexts, 'texts');
-        addClassPm(dom._qrmBtns, 'btns');
+        addClassQrm(dom._qrmBody, 'body');
+        addClassQrm(dom._qrmTexts, 'texts');
+        addClassQrm(dom._qrmBtns, 'btns');
 
-        setAttribute(dom._qrm, 'role', 'dialog');
-        setAttribute(dom._qrm, 'aria-modal', 'true');
-        setAttribute(dom._qrm, ARIA_HIDDEN, 'false');
-        setAttribute(dom._qrm, 'aria-describedby', 'qrm__desc');
+        //setAttribute(dom._qrm, 'aria-describedby', 'qrm__desc');
 
         if (consentModalLabelValue)
             setAttribute(dom._qrm, 'aria-label', consentModalLabelValue);
         else if (consentModalTitleValue)
-            setAttribute(dom._qrm, 'aria-labelledby', 'pm__title');
+            setAttribute(dom._qrm, 'aria-labelledby', 'qrm__title');
 
         const
             boxLayout = 'box',
@@ -126,8 +135,8 @@ export const createQRModal = (api, createMainContainer) => {
             if (!dom._qrmCloseIconBtn) {
                 dom._qrmCloseIconBtn = createNode(BUTTON_TAG);
                 dom._qrmCloseIconBtn.innerHTML = getSvgIcon();
-                addClassPm(dom._qrmCloseIconBtn, 'btn');
-                addClassPm(dom._qrmCloseIconBtn, 'btn--close');
+                addClassQrm(dom._qrmCloseIconBtn, 'btn');
+                addClassQrm(dom._qrmCloseIconBtn, 'btn--close');
                 addEvent(dom._qrmCloseIconBtn, CLICK_EVENT, () => {
                     _log('CookieConsent [ACCEPT]: necessary');
                     acceptAndHide([]);
@@ -149,12 +158,16 @@ export const createQRModal = (api, createMainContainer) => {
 
         appendChild(dom._qrm, dom._qrmBody);
         appendChild(dom._qrmContainer, dom._qrm);
+
+        //var qrcode = new QRCode(document.getElementById('qrcode'));
+        //qrcode.makeCode('ole.com.ar');
+
     }
 
     if (consentModalTitleValue) {
         if (!dom._qrmTitle) {
             dom._qrmTitle = createNode('h2');
-            dom._qrmTitle.className = dom._qrmTitle.id = 'pm__title';
+            dom._qrmTitle.className = dom._qrmTitle.id = 'qrm__title';
             appendChild(dom._qrmTexts, dom._qrmTitle);
         }
 
@@ -175,7 +188,7 @@ export const createQRModal = (api, createMainContainer) => {
 
         if (!dom._qrmDescription) {
             dom._qrmDescription = createNode('p');
-            dom._qrmDescription.className = dom._qrmDescription.id = 'pm__desc';
+            dom._qrmDescription.className = dom._qrmDescription.id = 'qrm__desc';
             appendChild(dom._qrmTexts, dom._qrmDescription);
         }
 
@@ -216,7 +229,7 @@ export const createQRModal = (api, createMainContainer) => {
 
     /*if (!dom._qrmBtnGroup) {
         dom._qrmBtnGroup = createNode(DIV_TAG);
-        addClassPm(dom._qrmBtnGroup, BTN_GROUP_CLASS);
+        addClassQrm(dom._qrmBtnGroup, BTN_GROUP_CLASS);
 
         acceptAllBtnData && appendChild(dom._qrmBtnGroup, dom._qrmAcceptAllBtn);
         acceptNecessaryBtnData && appendChild(dom._qrmBtnGroup, dom._qrmAcceptNecessaryBtn);
@@ -230,9 +243,9 @@ export const createQRModal = (api, createMainContainer) => {
 
         if ((!dom._qrmAcceptNecessaryBtn || !dom._qrmAcceptAllBtn)) {
             appendChild(dom._qrmBtnGroup, dom._qrmShowPreferencesBtn);
-            addClassPm(dom._qrmBtnGroup, BTN_GROUP_CLASS + '--uneven');
+            addClassQrm(dom._qrmBtnGroup, BTN_GROUP_CLASS + '--uneven');
         }else {
-            addClassPm(dom._qrmBtnGroup2, BTN_GROUP_CLASS);
+            addClassQrm(dom._qrmBtnGroup2, BTN_GROUP_CLASS);
             appendChild(dom._qrmBtnGroup2, dom._qrmShowPreferencesBtn);
             appendChild(dom._qrmBtns, dom._qrmBtnGroup2);
         }
@@ -244,9 +257,9 @@ export const createQRModal = (api, createMainContainer) => {
             let _consentModalFooterLinks = createNode(DIV_TAG);
             dom._cmFooterLinksGroup = createNode(DIV_TAG);
 
-            addClassPm(_consentModalFooter, 'footer');
-            addClassPm(_consentModalFooterLinks, 'links');
-            //addClassPm(dom._qrmFooterLinksGroup, 'link-group');
+            addClassQrm(_consentModalFooter, 'footer');
+            addClassQrm(_consentModalFooterLinks, 'links');
+            //addClassQrm(dom._qrmFooterLinksGroup, 'link-group');
 
             appendChild(_consentModalFooterLinks, dom._qrmFooterLinksGroup);
             appendChild(_consentModalFooter, _consentModalFooterLinks);
@@ -256,7 +269,7 @@ export const createQRModal = (api, createMainContainer) => {
         dom._qrmFooterLinksGroup.innerHTML = footerData;
     }*/
 
-    guiManager(0);
+    guiManager(2);
 
     if (!state._qrModalExists) {
         state._qrModalExists = true;

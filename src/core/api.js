@@ -24,6 +24,10 @@ import {
     deepCopy
 } from '../utils/general';
 
+import {QRCode} from '../../types/qr-library';
+
+window.QRCode = QRCode;
+
 import { manageExistingScripts, retrieveEnabledCategoriesAndServices } from '../utils/scripts';
 
 import {
@@ -317,6 +321,12 @@ export const showQr = () => {
 
     addClass(globalObj._dom._htmlDom, TOGGLE_QR_MODAL_CLASS);
     setAttribute(globalObj._dom._qrm, ARIA_HIDDEN, 'false');
+
+    /**
+     * show REAL QR
+     */
+    var qrcode = new QRCode(document.getElementById('qrcode'));
+    qrcode.makeCode('ole.com.ar');
 
     /**
      * Set focus to preferencesModal
