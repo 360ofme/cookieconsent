@@ -17,7 +17,7 @@ $service-toggle-knob-icon-width: 1.7px;
 
 #cc-main{
 
-    /* Make sure the preferences modal is always on top of the consent modal */
+    /* Make sure the QR modal is always on top of the consent modal */
     .qrm-wrapper{
         position: relative;
         z-index: 2;
@@ -784,7 +784,7 @@ $service-toggle-knob-icon-width: 1.7px;
     }
 }
 
-.show--preferences{
+.show--qr {
     #cc-main {
         .cc--anim{
             .qrm{
@@ -1002,7 +1002,7 @@ $service-toggle-knob-icon-width: 1.7px;
         }
     }
 
-    .show--preferences #cc-main .cc--anim .qrm{
+    .show--qr #cc-main .cc--anim .qrm{
         transform: translateY(0)!important;
     }
 }

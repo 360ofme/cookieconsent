@@ -38,7 +38,7 @@
   /* START: Bar layout */
   /* END: Bar layout */
   /* Dark overlay */
-  /* Make sure the preferences modal is always on top of the consent modal */
+  /* Make sure the QR modal is always on top of the consent modal */
   /* START: Services counter badge */
   /* END: Services counter badge */
   /* START: Section Toggle */
@@ -2060,17 +2060,17 @@ html.disable--interaction.show--consent, html.disable--interaction.show--consent
   transition: opacity var(--cc-modal-transition-duration) ease, visibility var(--cc-modal-transition-duration) ease, transform var(--cc-modal-transition-duration) ease;
 }
 
-.show--preferences #cc-main .cc--anim .qrm {
+.show--qr #cc-main .cc--anim .qrm {
   opacity: 1;
   visibility: visible !important;
 }
-.show--preferences #cc-main .cc--anim .qrm--box {
+.show--qr #cc-main .cc--anim .qrm--box {
   transform: translateY(-50%);
 }
-.show--preferences #cc-main .cc--anim .qrm--bar {
+.show--qr #cc-main .cc--anim .qrm--bar {
   transform: translateX(0);
 }
-.show--preferences #cc-main .cc--anim .qrm-overlay {
+.show--qr #cc-main .cc--anim .qrm-overlay {
   opacity: 1;
   visibility: visible;
 }
@@ -2201,7 +2201,7 @@ html.disable--interaction.show--consent, html.disable--interaction.show--consent
   #cc-main .qrm--flip .qrm__btn-group {
     flex-direction: column-reverse !important;
   }
-  .show--preferences #cc-main .cc--anim .qrm {
+  .show--qr #cc-main .cc--anim .qrm {
     transform: translateY(0) !important;
   }
 }

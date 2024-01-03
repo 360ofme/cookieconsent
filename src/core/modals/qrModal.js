@@ -52,31 +52,7 @@ export const createQRModal = (api, createMainContainer) => {
     const state = globalObj._state;
     const dom = globalObj._dom;
     const {hide} = api;
-
-
-    /**
-     * @type {import("../global").ConsentModalOptions}
-     */
-    const consentModalData = {
-        acceptAllBtn: 'Use 360ofme',
-        acceptNecessaryBtn: '',
-        description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip.',
-        footer: '<a href="#link">Privacy Policy</a>\n<a href="#link">Terms and conditions</a>',
-        showPreferencesBtn: '',
-        title: 'Hello kike, it\'s cookie time!'
-    };
-
-    //if (!consentModalData)
-    //    return;
-
-    console.log('la data del QR modal:', consentModalData);
-    const acceptAllBtnData = consentModalData.acceptAllBtn,
-        acceptNecessaryBtnData = consentModalData.acceptNecessaryBtn,
-        showPreferencesBtnData = consentModalData.showPreferencesBtn,
-        closeIconLabelData = consentModalData.closeIconLabel,
-        footerData = consentModalData.footer,
-        consentModalLabelValue = consentModalData.label,
-        consentModalTitleValue = consentModalData.title;
+    const consentModalTitleValue = 'Scan QR';
 
     /**
      * @param {string|string[]} [categories]
@@ -101,25 +77,22 @@ export const createQRModal = (api, createMainContainer) => {
         dom._qrm = createNode(DIV_TAG);
         addClass(dom._qrm, 'qrm');
         addId(dom._qrm, 'qrcode');
+
         setAttribute(dom._qrm, 'role', 'dialog');
         setAttribute(dom._qrm, ARIA_HIDDEN, true);
         setAttribute(dom._qrm, 'aria-modal', true);
-        setAttribute(dom._qrm, 'aria-labelledby', 'qrm__title');
+        //setAttribute(dom._qrm, 'aria-labelledby', 'qrm__title');
 
-        dom._qrmBody = createNode(DIV_TAG);
-        dom._qrmTexts = createNode(DIV_TAG);
-        dom._qrmBtns = createNode(DIV_TAG);
+        //dom._qrmBody = createNode(DIV_TAG);
+        //dom._qrmTexts = createNode(DIV_TAG);
+        //dom._qrmBtns = createNode(DIV_TAG);
 
-        addClassQrm(dom._qrmBody, 'body');
-        addClassQrm(dom._qrmTexts, 'texts');
-        addClassQrm(dom._qrmBtns, 'btns');
+        //addClassQrm(dom._qrmBody, 'body');
+        //addClassQrm(dom._qrmTexts, 'texts');
+        //addClassQrm(dom._qrmBtns, 'btns');
 
         //setAttribute(dom._qrm, 'aria-describedby', 'qrm__desc');
 
-        if (consentModalLabelValue)
-            setAttribute(dom._qrm, 'aria-label', consentModalLabelValue);
-        else if (consentModalTitleValue)
-            setAttribute(dom._qrm, 'aria-labelledby', 'qrm__title');
 
         const
             boxLayout = 'box',
@@ -131,7 +104,7 @@ export const createQRModal = (api, createMainContainer) => {
         /**
          * Close icon-button (visible only in the 'box' layout)
          */
-        if (consentModalTitleValue && closeIconLabelData && isBoxLayout) {
+        /*if (isBoxLayout) {
             if (!dom._qrmCloseIconBtn) {
                 dom._qrmCloseIconBtn = createNode(BUTTON_TAG);
                 dom._qrmCloseIconBtn.innerHTML = getSvgIcon();
@@ -144,19 +117,17 @@ export const createQRModal = (api, createMainContainer) => {
                 appendChild(dom._qrmBody, dom._qrmCloseIconBtn);
             }
 
-            setAttribute(dom._qrmCloseIconBtn, 'aria-label', closeIconLabelData);
-        }
+            //setAttribute(dom._qrmCloseIconBtn, 'aria-label', closeIconLabelData);
+        }*/
 
-        appendChild(dom._qrmBody, dom._qrmTexts);
+        //appendChild(dom._qrmBody, dom._qrmTexts);
 
-        if (acceptAllBtnData || acceptNecessaryBtnData || showPreferencesBtnData)
-            appendChild(dom._qrmBody, dom._qrmBtns);
 
         dom._qrmDivTabindex = createNode(DIV_TAG);
         setAttribute(dom._qrmDivTabindex, 'tabIndex', -1);
         appendChild(dom._qrm, dom._qrmDivTabindex);
 
-        appendChild(dom._qrm, dom._qrmBody);
+        //appendChild(dom._qrm, dom._qrmBody);
         appendChild(dom._qrmContainer, dom._qrm);
 
         //var qrcode = new QRCode(document.getElementById('qrcode'));
@@ -164,7 +135,7 @@ export const createQRModal = (api, createMainContainer) => {
 
     }
 
-    if (consentModalTitleValue) {
+    /*if (consentModalTitleValue) {
         if (!dom._qrmTitle) {
             dom._qrmTitle = createNode('h2');
             dom._qrmTitle.className = dom._qrmTitle.id = 'qrm__title';
@@ -172,9 +143,9 @@ export const createQRModal = (api, createMainContainer) => {
         }
 
         dom._qrmTitle.innerHTML = consentModalTitleValue;
-    }
+    }*/
 
-    let description = consentModalData.description;
+    /*let description = consentModalData.description;
 
     if (description) {
         if (state._revisionEnabled) {
@@ -193,7 +164,7 @@ export const createQRModal = (api, createMainContainer) => {
         }
 
         dom._qrmDescription.innerHTML = description;
-    }
+    }*/
 
     /*if (acceptAllBtnData) {
         if (!dom._cmAcceptAllBtn) {

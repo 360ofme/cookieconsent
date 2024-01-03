@@ -304,6 +304,7 @@ export const showQr = () => {
 
     if (state._qrModalVisible)
         return;
+
     console.log('state qr visible:', state);
     if (!state._qrModalExists)
         createQRModal(miniAPI, createMainContainer);
@@ -321,7 +322,7 @@ export const showQr = () => {
 
     addClass(globalObj._dom._htmlDom, TOGGLE_QR_MODAL_CLASS);
     setAttribute(globalObj._dom._qrm, ARIA_HIDDEN, 'false');
-
+    console.log('hasta aca llega');
     /**
      * show REAL QR
      */
