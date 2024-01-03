@@ -2992,17 +2992,26 @@
     const createQRModal = (api, createMainContainer) => {
         const state = globalObj._state;
         const dom = globalObj._dom;
+        const {hide, hideQR} = api;
 
         // Create modal if it doesn't exist
-        console.log('kike check si cmContainer exist:', dom._qrmContainer);
         if (!dom._qrmContainer) {
-            console.log('entro al create modal if it doesnt exist');
             dom._qrmContainer = createNode(DIV_TAG);
             addClass(dom._qrmContainer, 'qrm-wrapper');
 
             const qrmOverlay = createNode('div');
             addClass(qrmOverlay, 'qrm-overlay');
             appendChild(dom._qrmContainer, qrmOverlay);
+
+            /**
+             * Hide modal when overlay is clicked
+             */
+            addEvent(qrmOverlay, CLICK_EVENT, hideQR);
+
+            addEvent(dom._htmlDom, 'keydown', (event) => {
+                if (event.keyCode === 27)
+                    hideQR();
+            }, true);
 
             // QR modal
             dom._qrm = createNode(DIV_TAG);
@@ -4492,13 +4501,52 @@
         fireEvent(globalObj._customEvents._onModalHide, PREFERENCES_MODAL_NAME);
     };
 
+    /**
+     * Hide preferences modal
+     */
+    const hideQR = () => {
+        const state = globalObj._state;
+
+        if (!state._qrModalVisible)
+            return;
+
+        state._qrModalVisible = false;
+
+        /**
+         * Fix focus restoration to body with Chrome
+         */
+        focus(globalObj._dom._pmFocusSpan, true);
+
+        removeClass(globalObj._dom._htmlDom, TOGGLE_QR_MODAL_CLASS);
+        setAttribute(globalObj._dom._qrm, ARIA_HIDDEN, 'true');
+
+        /**
+         * If consent modal is visible, focus him (instead of page document)
+         */
+        if (state._consentModalVisible) {
+            focus(state._lastFocusedModalElement);
+            state._lastFocusedModalElement = null;
+        } else {
+            /**
+             * Restore focus to last page element which had focus before modal opening
+             */
+            focus(state._lastFocusedElemBeforeModal);
+            state._lastFocusedElemBeforeModal = null;
+        }
+
+        _log('CookieConsent [TOGGLE]: hide QR Modal');
+
+        fireEvent(globalObj._customEvents._onModalHide, QR_MODAL_NAME);
+    };
+
     var miniAPI = {
         show,
         hide,
         showPreferences,
         hidePreferences,
         acceptCategory,
-        showQr
+        showQr,
+        hideQR
     };
 
     /**
@@ -4877,6 +4925,7 @@
     exports.getUserPreferences = getUserPreferences;
     exports.hide = hide;
     exports.hidePreferences = hidePreferences;
+    exports.hideQR = hideQR;
     exports.loadScript = loadScript;
     exports.reset = reset;
     exports.run = run;

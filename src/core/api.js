@@ -412,13 +412,52 @@ export const hidePreferences = () => {
     fireEvent(globalObj._customEvents._onModalHide, PREFERENCES_MODAL_NAME);
 };
 
+/**
+ * Hide preferences modal
+ */
+export const hideQR = () => {
+    const state = globalObj._state;
+
+    if (!state._qrModalVisible)
+        return;
+
+    state._qrModalVisible = false;
+
+    /**
+     * Fix focus restoration to body with Chrome
+     */
+    focus(globalObj._dom._pmFocusSpan, true);
+
+    removeClass(globalObj._dom._htmlDom, TOGGLE_QR_MODAL_CLASS);
+    setAttribute(globalObj._dom._qrm, ARIA_HIDDEN, 'true');
+
+    /**
+     * If consent modal is visible, focus him (instead of page document)
+     */
+    if (state._consentModalVisible) {
+        focus(state._lastFocusedModalElement);
+        state._lastFocusedModalElement = null;
+    } else {
+        /**
+         * Restore focus to last page element which had focus before modal opening
+         */
+        focus(state._lastFocusedElemBeforeModal);
+        state._lastFocusedElemBeforeModal = null;
+    }
+
+    _log('CookieConsent [TOGGLE]: hide QR Modal');
+
+    fireEvent(globalObj._customEvents._onModalHide, QR_MODAL_NAME);
+};
+
 var miniAPI = {
     show,
     hide,
     showPreferences,
     hidePreferences,
     acceptCategory,
-    showQr
+    showQr,
+    hideQR
 };
 
 /**

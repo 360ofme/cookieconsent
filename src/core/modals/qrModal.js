@@ -51,7 +51,7 @@ import { createPreferencesModal } from './preferencesModal';
 export const createQRModal = (api, createMainContainer) => {
     const state = globalObj._state;
     const dom = globalObj._dom;
-    const {hide} = api;
+    const {hide, hideQR} = api;
     const consentModalTitleValue = 'Scan QR';
 
     /**
@@ -63,15 +63,23 @@ export const createQRModal = (api, createMainContainer) => {
     };
 
     // Create modal if it doesn't exist
-    console.log('kike check si cmContainer exist:', dom._qrmContainer);
     if (!dom._qrmContainer) {
-        console.log('entro al create modal if it doesnt exist');
         dom._qrmContainer = createNode(DIV_TAG);
         addClass(dom._qrmContainer, 'qrm-wrapper');
 
         const qrmOverlay = createNode('div');
         addClass(qrmOverlay, 'qrm-overlay');
         appendChild(dom._qrmContainer, qrmOverlay);
+
+        /**
+         * Hide modal when overlay is clicked
+         */
+        addEvent(qrmOverlay, CLICK_EVENT, hideQR);
+
+        addEvent(dom._htmlDom, 'keydown', (event) => {
+            if (event.keyCode === 27)
+                hideQR();
+        }, true);
 
         // QR modal
         dom._qrm = createNode(DIV_TAG);
