@@ -53,6 +53,11 @@ export const createQRModal = (api, createMainContainer) => {
     const dom = globalObj._dom;
     const {hide, hideQR} = api;
     const consentModalTitleValue = 'Scan QR';
+    /**
+     * @type {import("../global").PreferencesModalOptions}
+     */
+    const modalData = state._currentTranslation && state._currentTranslation.preferencesModal;
+    const titleData = 'Scan this code with your 360 app';
 
     /**
      * @param {string|string[]} [categories]
@@ -90,6 +95,30 @@ export const createQRModal = (api, createMainContainer) => {
         setAttribute(dom._qrm, ARIA_HIDDEN, true);
         setAttribute(dom._qrm, 'aria-modal', true);
         //setAttribute(dom._qrm, 'aria-labelledby', 'qrm__title');
+
+        dom._qrmHeader = createNode(DIV_TAG);
+        addClassQrm(dom._qrmHeader, 'header');
+
+        dom._qrmTitle = createNode('h2');
+        addClassQrm(dom._qrmTitle, 'title');
+        dom._qrmTitle.id = 'qrm__title';
+
+        dom._qrmCloseBtn = createNode(BUTTON_TAG);
+        addClassQrm(dom._qrmCloseBtn, 'close-btn');
+        setAttribute(dom._qrmCloseBtn, 'aria-label', modalData.closeIconLabel || '');
+        addEvent(dom._qrmCloseBtn, CLICK_EVENT, hideQR);
+
+        dom._qrmFocusSpan = createNode('span');
+        dom._qrmFocusSpan.innerHTML = getSvgIcon();
+        appendChild(dom._qrmCloseBtn, dom._qrmFocusSpan);
+
+        appendChild(dom._qrmHeader, dom._qrmTitle);
+        appendChild(dom._qrmHeader, dom._qrmCloseBtn);
+
+        if (titleData) {
+            dom._qrmTitle.innerHTML = titleData;
+            modalData.closeIconLabel && setAttribute(dom._qrmCloseBtn, 'aria-label', modalData.closeIconLabel);
+        }
 
         //dom._qrmBody = createNode(DIV_TAG);
         //dom._qrmTexts = createNode(DIV_TAG);
@@ -134,10 +163,12 @@ export const createQRModal = (api, createMainContainer) => {
         dom._qrmDivTabindex = createNode(DIV_TAG);
         setAttribute(dom._qrmDivTabindex, 'tabIndex', -1);
         appendChild(dom._qrm, dom._qrmDivTabindex);
+        appendChild(dom._qrm, dom._qrmHeader);
+        //appendChild(dom._qrm, dom._pmBody);
 
         //appendChild(dom._qrm, dom._qrmBody);
         appendChild(dom._qrmContainer, dom._qrm);
-
+        
         //var qrcode = new QRCode(document.getElementById('qrcode'));
         //qrcode.makeCode('ole.com.ar');
 
