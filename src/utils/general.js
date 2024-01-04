@@ -123,6 +123,12 @@ export const addClass = (elem, className) => elem.classList.add(className);
 
 /**
  * @param {HTMLElement} elem
+ * @param {string} id
+ */
+export const addId = (elem, id) => elem.id = id;
+
+/**
+ * @param {HTMLElement} elem
  * @param {string} className
  */
 export const addClassCm = (elem, className) => addClass(elem, 'cm__' + className);
@@ -131,6 +137,11 @@ export const addClassCm = (elem, className) => addClass(elem, 'cm__' + className
  * @param {string} className
  */
 export const addClassPm = (elem, className) => addClass(elem, 'pm__' + className);
+/**
+ * @param {HTMLElement} elem
+ * @param {string} className
+ */
+export const addClassQrm = (elem, className) => addClass(elem, 'qrm__' + className);
 
 /**
  * @param {HTMLElement} elem
@@ -625,6 +636,7 @@ export const addDataButtonListeners = (elem, api, createPreferencesModal, create
     const {
         show,
         showPreferences,
+        showQr,
         hide,
         hidePreferences,
         acceptCategory
@@ -727,12 +739,12 @@ export const focus = (el, toggleTabIndex) => {
 
 /**
  * @param {HTMLDivElement} element
- * @param {1 | 2} modalId
+ * @param {1 | 2 | 3} modalId
  */
 export const focusAfterTransition = (element, modalId) => {
     const getVisibleDiv = (modalId) => modalId === 1
-        ? globalObj._dom._cmDivTabindex
-        : globalObj._dom._pmDivTabindex;
+        ? globalObj._dom._cmDivTabindex 
+        : modalId === 2 ? globalObj._dom._pmDivTabindex : globalObj._dom._qrmDivTabindex;
 
     const setFocus = (event) => {
         event.target.removeEventListener('transitionend', setFocus);
@@ -812,6 +824,7 @@ export const handleFocusTrap = (modal) => {
      */
     const trapFocus = (modal) => {
         const isConsentModal = modal === dom._cm;
+        const isPreferenceModal = modal === dom._pm;
 
         const scope = state._userConfig.disablePageInteraction
             ? dom._htmlDom
@@ -821,11 +834,11 @@ export const handleFocusTrap = (modal) => {
 
         const getFocusableElements = () => isConsentModal
             ? state._cmFocusableElements
-            : state._pmFocusableElements;
+            : isPreferenceModal ? state._pmFocusableElements : state._qrmFocusableElements;
 
         const isModalVisible = () => isConsentModal
             ? state._consentModalVisible && !state._preferencesModalVisible
-            : state._preferencesModalVisible;
+            : isPreferenceModal ? state._preferencesModalVisible : state._qrModalVisible;
 
         addEvent(scope, 'keydown', (e) => {
             if (e.key !== 'Tab' || !isModalVisible())
@@ -870,7 +883,7 @@ export const getFocusableElements = (root) => querySelectorAll(root, focusableTy
 /**
  * Save reference to first and last focusable elements inside each modal
  * to prevent losing focus while navigating with TAB
- * @param {1 | 2} [modalId]
+ * @param {1 | 2 | 3} [modalId]
  */
 export const getModalFocusableData = (modalId) => {
     const { _state, _dom } = globalObj;
@@ -895,6 +908,9 @@ export const getModalFocusableData = (modalId) => {
 
     if (modalId === 2 && _state._preferencesModalExists)
         saveAllFocusableElements(_dom._pm, _state._pmFocusableElements);
+
+    if (modalId === 3 && _state._qrModalExists)
+        saveAllFocusableElements(_dom._qrm, _state._qrmFocusableElements);
 };
 
 /**

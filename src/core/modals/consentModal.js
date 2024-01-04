@@ -27,6 +27,7 @@ import {
 
 import { guiManager } from '../../utils/gui-manager';
 import { createPreferencesModal } from './preferencesModal';
+import { createQRModal }  from './qrModal';
 
 /**
  * @callback CreateMainContainer
@@ -52,15 +53,19 @@ const createFocusSpan = () => {
 export const createConsentModal = (api, createMainContainer) => {
     const state = globalObj._state;
     const dom = globalObj._dom;
-    const {hide, showPreferences, acceptCategory} = api;
+    const {hide, showPreferences, acceptCategory, showQr} = api;
 
     /**
      * @type {import("../global").ConsentModalOptions}
      */
-    const consentModalData = state._currentTranslation && state._currentTranslation.consentModal;
-
-    if (!consentModalData)
-        return;
+    const consentModalData = {
+        acceptAllBtn: 'Use 360ofme',
+        acceptNecessaryBtn: 'Just neccesary',
+        description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip.',
+        footer: '<a href="#link">Privacy Policy</a>\n<a href="#link">Terms and conditions</a>',
+        showPreferencesBtn: 'Show Preferences',
+        title: 'Hello kike, it\'s cookie time!'
+    };
 
     const acceptAllBtnData = consentModalData.acceptAllBtn,
         acceptNecessaryBtnData = consentModalData.acceptNecessaryBtn,
@@ -177,12 +182,19 @@ export const createConsentModal = (api, createMainContainer) => {
             dom._cmAcceptAllBtn = createNode(BUTTON_TAG);
             appendChild(dom._cmAcceptAllBtn, createFocusSpan());
             addClassCm(dom._cmAcceptAllBtn, 'btn');
-            setAttribute(dom._cmAcceptAllBtn, DATA_ROLE, 'all');
+            setAttribute(dom._cmAcceptAllBtn, DATA_ROLE, 'show');
 
-            addEvent(dom._cmAcceptAllBtn, CLICK_EVENT, () => {
+            /*addEvent(dom._cmAcceptAllBtn, CLICK_EVENT, () => {
                 _log('CookieConsent [ACCEPT]: all');
                 acceptAndHide('all');
+            });*/
+
+            addEvent(dom._cmAcceptAllBtn, 'mouseenter', () => {
+                if (!state._qrModalExists) {
+                    createQRModal(api, createMainContainer);
+                }
             });
+            addEvent(dom._cmAcceptAllBtn, CLICK_EVENT, showQr);
         }
 
         dom._cmAcceptAllBtn.firstElementChild.innerHTML = acceptAllBtnData;

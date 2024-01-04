@@ -556,9 +556,19 @@ declare namespace CookieConsent {
     function showPreferences(): void
 
     /**
+     * Show the QR Modal
+     */
+    function showQr(): void
+
+    /**
      * Hide the preferencesModal.
      */
     function hidePreferences(): void
+
+    /**
+     * Hide the QR modal.
+     */
+    function hideQR(): void
 
     /**
      * Accept/Reject categories.

@@ -24,6 +24,10 @@ import {
     deepCopy
 } from '../utils/general';
 
+import {QRCode} from '../../types/qr-library';
+
+window.QRCode = QRCode;
+
 import { manageExistingScripts, retrieveEnabledCategoriesAndServices } from '../utils/scripts';
 
 import {
@@ -37,7 +41,8 @@ import {
     createConsentModal,
     createPreferencesModal,
     generateHtml,
-    createMainContainer
+    createMainContainer,
+    createQRModal
 } from './modals/index';
 
 import {
@@ -65,10 +70,12 @@ import {
     TOGGLE_CONSENT_MODAL_CLASS,
     TOGGLE_DISABLE_INTERACTION_CLASS,
     TOGGLE_PREFERENCES_MODAL_CLASS,
+    TOGGLE_QR_MODAL_CLASS,
     OPT_OUT_MODE,
     CONSENT_MODAL_NAME,
     ARIA_HIDDEN,
-    PREFERENCES_MODAL_NAME
+    PREFERENCES_MODAL_NAME,
+    QR_MODAL_NAME
 } from '../utils/constants';
 import { localStorageManager } from '../utils/localstorage';
 
@@ -289,6 +296,53 @@ export const showPreferences = () => {
 };
 
 /**
+ * Show QR Modal
+ */
+export const showQr = () => {
+    const state = globalObj._state;
+
+    if (state._qrModalVisible)
+        return;
+
+    if (!state._qrModalExists)
+        createQRModal(miniAPI, createMainContainer);
+
+    state._qrModalVisible = true;
+
+    // If there is no consent-modal, keep track of the last focused elem.
+    if (!state._consentModalVisible) {
+        state._lastFocusedElemBeforeModal = getActiveElement();
+    } else {
+        state._lastFocusedModalElement = getActiveElement();
+    }
+
+    focusAfterTransition(globalObj._dom._qrm, 3);
+
+    addClass(globalObj._dom._htmlDom, TOGGLE_QR_MODAL_CLASS);
+    setAttribute(globalObj._dom._qrm, ARIA_HIDDEN, 'false');
+    /**
+     * show REAL QR
+     */
+
+    if (!state._qrModalQRCreated) {
+        var qrcode = new QRCode(document.getElementById('qrcode'));
+        qrcode.makeCode('ole.com.ar');
+        state._qrModalQRCreated = true;
+    }
+
+    /**
+     * Set focus to preferencesModal
+     */
+    setTimeout(() => {
+        focus(globalObj._dom._qrmDivTabindex);
+    }, 100);
+
+    _log('CookieConsent [TOGGLE]: show qrModal');
+
+    fireEvent(globalObj._customEvents._onModalShow, QR_MODAL_NAME);
+};
+
+/**
  * https://github.com/orestbida/cookieconsent/issues/481
  */
 const discardUnsavedPreferences = () => {
@@ -359,12 +413,52 @@ export const hidePreferences = () => {
     fireEvent(globalObj._customEvents._onModalHide, PREFERENCES_MODAL_NAME);
 };
 
+/**
+ * Hide preferences modal
+ */
+export const hideQR = () => {
+    const state = globalObj._state;
+
+    if (!state._qrModalVisible)
+        return;
+
+    state._qrModalVisible = false;
+
+    /**
+     * Fix focus restoration to body with Chrome
+     */
+    focus(globalObj._dom._pmFocusSpan, true);
+
+    removeClass(globalObj._dom._htmlDom, TOGGLE_QR_MODAL_CLASS);
+    setAttribute(globalObj._dom._qrm, ARIA_HIDDEN, 'true');
+
+    /**
+     * If consent modal is visible, focus him (instead of page document)
+     */
+    if (state._consentModalVisible) {
+        focus(state._lastFocusedModalElement);
+        state._lastFocusedModalElement = null;
+    } else {
+        /**
+         * Restore focus to last page element which had focus before modal opening
+         */
+        focus(state._lastFocusedElemBeforeModal);
+        state._lastFocusedElemBeforeModal = null;
+    }
+
+    _log('CookieConsent [TOGGLE]: hide QR Modal');
+
+    fireEvent(globalObj._customEvents._onModalHide, QR_MODAL_NAME);
+};
+
 var miniAPI = {
     show,
     hide,
     showPreferences,
     hidePreferences,
-    acceptCategory
+    acceptCategory,
+    showQr,
+    hideQR
 };
 
 /**

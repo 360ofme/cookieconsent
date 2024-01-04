@@ -40,3 +40,4 @@ export const generateHtml = (api) => {
 
 export * from './consentModal';
 export * from './preferencesModal';
+export * from './qrModal';

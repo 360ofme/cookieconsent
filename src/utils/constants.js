@@ -4,6 +4,7 @@ export const OPT_IN_MODE = 'opt-in';
 export const OPT_OUT_MODE = 'opt-out';
 
 export const TOGGLE_CONSENT_MODAL_CLASS = 'show--consent';
+export const TOGGLE_QR_MODAL_CLASS = 'show--qr';
 export const TOGGLE_PREFERENCES_MODAL_CLASS = 'show--preferences';
 export const TOGGLE_DISABLE_INTERACTION_CLASS = 'disable--interaction';
 
@@ -19,3 +20,4 @@ export const DATA_ROLE = 'data-role';
 
 export const CONSENT_MODAL_NAME = 'consentModal';
 export const PREFERENCES_MODAL_NAME = 'preferencesModal';
+export const QR_MODAL_NAME = 'qrModal';
