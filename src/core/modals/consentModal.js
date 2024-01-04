@@ -67,10 +67,6 @@ export const createConsentModal = (api, createMainContainer) => {
         title: 'Hello kike, it\'s cookie time!'
     };
 
-    //if (!consentModalData)
-    //    return;
-
-    console.log('la data del consent modal:', consentModalData);
     const acceptAllBtnData = consentModalData.acceptAllBtn,
         acceptNecessaryBtnData = consentModalData.acceptNecessaryBtn,
         showPreferencesBtnData = consentModalData.showPreferencesBtn,
@@ -85,8 +81,6 @@ export const createConsentModal = (api, createMainContainer) => {
     const acceptAndHide = (categories) => {
         hide();
         acceptCategory(categories);
-        console.log('Cristian is editing');
-
     };
 
     // Create modal if it doesn't exist
@@ -198,7 +192,6 @@ export const createConsentModal = (api, createMainContainer) => {
             addEvent(dom._cmAcceptAllBtn, 'mouseenter', () => {
                 if (!state._qrModalExists) {
                     createQRModal(api, createMainContainer);
-                    console.log('MOuese enter kike');
                 }
             });
             addEvent(dom._cmAcceptAllBtn, CLICK_EVENT, showQr);

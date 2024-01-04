@@ -197,6 +197,7 @@ export class GlobalState {
 
             _qrModalExists : false,
             _qrModalVisible : false,
+            _qrModalQRCreated: false,
 
             /**
             * @type {HTMLElement[]}
