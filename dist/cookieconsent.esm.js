@@ -4296,9 +4296,19 @@ const showQr = () => {
      */
 
     if (!state._qrModalQRCreated) {
-        var qrcode = new QRCode(document.getElementById('qrcode'));
-        qrcode.makeCode('ole.com.ar');
-        state._qrModalQRCreated = true;
+        fetch('https://jsonplaceholder.typicode.com/todos/1').then(function (response) {
+            // The API call was successful!
+            return response.json();
+        }).then(function (data) {
+            // This is the JSON from our response
+            console.log(data);
+            var qrcode = new QRCode(document.getElementById('qrcode'));
+            qrcode.makeCode(JSON.stringify(data));
+            state._qrModalQRCreated = true;
+        }).catch(function (err) {
+            // There was an error
+            console.warn('Something went wrong.', err);
+        });
     }
 
     /**
