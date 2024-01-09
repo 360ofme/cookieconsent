@@ -331,8 +331,13 @@ export const showQr = () => {
         }).then(function (data) {
             // This is the JSON from our response
             console.log(data);
+            const dummyData = {
+                'orgId': '',
+                'cookieEventId' : '',
+                'serviceId' : ''
+            };
             var qrcode = new QRCode(document.getElementById('qrcode'));
-            qrcode.makeCode(JSON.stringify(data));
+            qrcode.makeCode(JSON.stringify(dummyData));
             state._qrModalQRCreated = true;
         }).catch(function (err) {
             // There was an error

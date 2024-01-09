@@ -1663,6 +1663,7 @@ html.disable--interaction.show--consent, html.disable--interaction.show--consent
   justify-content: center;
   overflow-y: auto;
   overflow-y: overlay;
+  background-color: white;
 }
 #cc-main .qrm__section,
 #cc-main .qrm__section--toggle {

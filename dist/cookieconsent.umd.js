@@ -2998,7 +2998,8 @@
     const createQRModal = (api, createMainContainer) => {
         const state = globalObj._state;
         const dom = globalObj._dom;
-        const {hide, hideQR} = api;
+        const {hide, hideQR, acceptCategory} = api;
+
         /**
          * @type {import("../global").PreferencesModalOptions}
          */
@@ -3065,7 +3066,7 @@
             dom._qrmBody = createNode(DIV_TAG);
             addClassQrm(dom._qrmBody, 'body');
             addId(dom._qrmBody, 'qrcode');
-
+            
             dom._qrmDivTabindex = createNode(DIV_TAG);
             setAttribute(dom._qrmDivTabindex, 'tabIndex', -1);
             appendChild(dom._qrm, dom._qrmDivTabindex);
@@ -4308,8 +4309,13 @@
             }).then(function (data) {
                 // This is the JSON from our response
                 console.log(data);
+                const dummyData = {
+                    'orgId': '',
+                    'cookieEventId' : '',
+                    'serviceId' : ''
+                };
                 var qrcode = new QRCode(document.getElementById('qrcode'));
-                qrcode.makeCode(JSON.stringify(data));
+                qrcode.makeCode(JSON.stringify(dummyData));
                 state._qrModalQRCreated = true;
             }).catch(function (err) {
                 // There was an error

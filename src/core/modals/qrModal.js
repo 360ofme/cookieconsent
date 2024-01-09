@@ -51,8 +51,19 @@ import { createPreferencesModal } from './preferencesModal';
 export const createQRModal = (api, createMainContainer) => {
     const state = globalObj._state;
     const dom = globalObj._dom;
-    const {hide, hideQR} = api;
+    const {hide, hideQR, acceptCategory} = api;
     const consentModalTitleValue = 'Scan QR';
+
+    /**
+     * @param {string|string[]} [categories]
+     */
+    const acceptHelper = (categories) => {
+        console.log('kike accepting');
+        acceptCategory(categories);
+        hideQR();
+        hide();
+    };
+
     /**
      * @type {import("../global").PreferencesModalOptions}
      */
@@ -120,7 +131,7 @@ export const createQRModal = (api, createMainContainer) => {
         dom._qrmBody = createNode(DIV_TAG);
         addClassQrm(dom._qrmBody, 'body');
         addId(dom._qrmBody, 'qrcode');
-
+        
         dom._qrmDivTabindex = createNode(DIV_TAG);
         setAttribute(dom._qrmDivTabindex, 'tabIndex', -1);
         appendChild(dom._qrm, dom._qrmDivTabindex);
