@@ -4330,7 +4330,6 @@
             };
             
             newEventSource.onmessage = (e) => {
-                console.log(e);
                 newEventSource.close();
 
                 globalObj._dataBundle = {
@@ -4341,6 +4340,14 @@
                         EventSource: null
                     }
                 };
+
+                if (e?.data?.consent?.consent === 'AcceptAll') {
+                    acceptCategory('all');
+                    hideQR();
+                } else {
+                    acceptCategory([]);
+                    hideQR();
+                }
             };
         }
         

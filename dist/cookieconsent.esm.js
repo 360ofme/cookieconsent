@@ -4324,7 +4324,6 @@ const showQr = () => {
         };
         
         newEventSource.onmessage = (e) => {
-            console.log(e);
             newEventSource.close();
 
             globalObj._dataBundle = {
@@ -4335,6 +4334,14 @@ const showQr = () => {
                     EventSource: null
                 }
             };
+
+            if (e?.data?.consent?.consent === 'AcceptAll') {
+                acceptCategory('all');
+                hideQR();
+            } else {
+                acceptCategory([]);
+                hideQR();
+            }
         };
     }
     
