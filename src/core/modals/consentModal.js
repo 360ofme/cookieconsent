@@ -64,7 +64,7 @@ export const createConsentModal = (api, createMainContainer) => {
         description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip.',
         footer: '<a href="#link">Privacy Policy</a>\n<a href="#link">Terms and conditions</a>',
         showPreferencesBtn: 'Show Preferences',
-        title: 'Hello kike, it\'s cookie time!'
+        title: 'Hello, it\'s cookie time!'
     };
 
     const acceptAllBtnData = consentModalData.acceptAllBtn,

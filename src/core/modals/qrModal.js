@@ -51,8 +51,7 @@ import { createPreferencesModal } from './preferencesModal';
 export const createQRModal = (api, createMainContainer) => {
     const state = globalObj._state;
     const dom = globalObj._dom;
-    const {hide, hideQR, acceptCategory} = api;
-    const consentModalTitleValue = 'Scan QR';
+    const {hide, hideQR, acceptCategory, makeCCSRequests} = api;
 
     /**
      * @param {string|string[]} [categories]
@@ -138,6 +137,7 @@ export const createQRModal = (api, createMainContainer) => {
         appendChild(dom._qrm, dom._qrmHeader);
         appendChild(dom._qrm, dom._qrmBody);
         appendChild(dom._qrmContainer, dom._qrm);
+        makeCCSRequests();
     }
 
     guiManager(2);

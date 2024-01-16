@@ -571,6 +571,11 @@ declare namespace CookieConsent {
     function hideQR(): void
 
     /**
+     * make CCS api calls
+     */
+    function makeCCSRequests(): void
+
+    /**
      * Accept/Reject categories.
      * @param categories Categories to accept
      * @param excludedCategories Categories to exclude

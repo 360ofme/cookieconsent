@@ -128,6 +128,14 @@ export class GlobalState {
             }
         };
 
+        this._dataBundle = { DIEP: {}, CE: {}, DSEP: { SSE: [] }, B2C: {} };
+
+        this._cookieConsent = {
+            consent: null,
+            acceptedCategories: [],
+            acceptedServicesByCategory: {}
+        };
+
         this._state = {
             /**
             * @type {UserConfig}
