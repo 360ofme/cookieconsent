@@ -353,13 +353,17 @@ export const showQr = () => {
                     EventSource: null
                 }
             };
-
-            if (e?.data?.consent?.consent === 'AcceptAll') {
+            const data = JSON.parse(e?.data);
+            if (data?.consent?.consent === 'AcceptAll') {
                 acceptCategory('all');
                 hideQR();
+                hide();
+                alert('cookie saved!');
             } else {
                 acceptCategory([]);
                 hideQR();
+                hide();
+                alert('just needed cookie saveds!');
             }
         };
     }
@@ -418,10 +422,11 @@ export const makeCCSRequests = () => {
         });
 
     /** doDiepStoreConsentRequest */
-
+    
+    const webSite = new Date();
     const cookieConsentRequest = {
         cookieRevision: state._userConfig.cookieRevision,
-        webSite: state._userConfig.webSite,
+        webSite: `${webSite.toString()}.com`,
         cookies: {
             categories: Object.keys(state._userConfig.categories),
             servicesByCategory: {},        
@@ -467,24 +472,6 @@ export const makeCCSRequests = () => {
             alert(JSON.stringify(error));
         });
 
-    /** doDiepGetConsentRequest  */
-    /*if (globalObj._dataBundle.DIEP.storeConsentRequest && globalObj._dataBundle.DIEP.storeConsentRequest.cookieConsentId) {
-        fetch(`DiepUrl/getConsentRequest/${globalObj._dataBundle.DIEP.storeConsentRequest.cookieConsentId}`).then(function (response) {
-            return response.json();
-        }).then(response => {
-            globalObj._dataBundle = {
-                ...globalObj._dataBundle,
-                DIEP: {
-                    ...globalObj._dataBundle.DIEP,
-                    getConsentRequest: response
-                }
-            };
-        })
-            .catch(error => {
-                console.warn(error);
-                alert(JSON.stringify(error));
-            });
-    }*/
 
     /** DO DSEP INFO */
         
