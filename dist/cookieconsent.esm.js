@@ -4404,13 +4404,18 @@ const makeCCSRequests = () => {
 
     /** doDiepStoreConsentRequest */
     
+    const servicesByCategory = {};
+    Object.entries(state._userConfig.categories).forEach(([category, { services }]) => {
+        servicesByCategory[category] = Object.values(services).map(service => service.label);
+    });
+    console.log('result kiike:', servicesByCategory);
     const webSite = new Date();
     const cookieConsentRequest = {
         cookieRevision: state._userConfig.cookieRevision,
         webSite: `${webSite.toString()}.com`,
         cookies: {
             categories: Object.keys(state._userConfig.categories),
-            servicesByCategory: {},        
+            servicesByCategory        
         }
     };
 
