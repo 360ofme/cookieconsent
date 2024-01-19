@@ -54,16 +54,6 @@ export const createQRModal = (api, createMainContainer) => {
     const {hide, hideQR, acceptCategory, makeCCSRequests} = api;
 
     /**
-     * @param {string|string[]} [categories]
-     */
-    const acceptHelper = (categories) => {
-        console.log('kike accepting');
-        acceptCategory(categories);
-        hideQR();
-        hide();
-    };
-
-    /**
      * @type {import("../global").PreferencesModalOptions}
      */
     const modalData = state._currentTranslation && state._currentTranslation.preferencesModal;
@@ -130,12 +120,21 @@ export const createQRModal = (api, createMainContainer) => {
         dom._qrmBody = createNode(DIV_TAG);
         addClassQrm(dom._qrmBody, 'body');
         addId(dom._qrmBody, 'qrcode');
+
+        dom._qrmFooter = createNode(DIV_TAG);
+        addClassQrm(dom._qrmFooter, 'footer');
+
+        var sDesc = createNode('p');
+        addClassQrm(sDesc, 'section-desc');
+        sDesc.innerHTML = 'QR Code will expire in 90 seconds';
+        appendChild(dom._qrmFooter, sDesc);
         
         dom._qrmDivTabindex = createNode(DIV_TAG);
         setAttribute(dom._qrmDivTabindex, 'tabIndex', -1);
         appendChild(dom._qrm, dom._qrmDivTabindex);
         appendChild(dom._qrm, dom._qrmHeader);
         appendChild(dom._qrm, dom._qrmBody);
+        appendChild(dom._qrm, dom._qrmFooter);
         appendChild(dom._qrmContainer, dom._qrm);
         makeCCSRequests();
     }

@@ -427,11 +427,16 @@ export const makeCCSRequests = () => {
     Object.entries(state._userConfig.categories).forEach(([category, { services }]) => {
         servicesByCategory[category] = Object.values(services).map(service => service.label);
     });
-    console.log('result kiike:', servicesByCategory);
-    const webSite = new Date();
+    let webSite = '';
+    if (state._userConfig?.devMode) {
+        webSite = new Date();
+        webSite = `${webSite.toString()}.com`;
+    }  else {
+        webSite = state._userConfig?.webSite;
+    }
     const cookieConsentRequest = {
         cookieRevision: state._userConfig.cookieRevision,
-        webSite: `${webSite.toString()}.com`,
+        webSite,
         cookies: {
             categories: Object.keys(state._userConfig.categories),
             servicesByCategory        

@@ -3074,12 +3074,21 @@
             dom._qrmBody = createNode(DIV_TAG);
             addClassQrm(dom._qrmBody, 'body');
             addId(dom._qrmBody, 'qrcode');
+
+            dom._qrmFooter = createNode(DIV_TAG);
+            addClassQrm(dom._qrmFooter, 'footer');
+
+            var sDesc = createNode('p');
+            addClassQrm(sDesc, 'section-desc');
+            sDesc.innerHTML = 'QR Code will expire in 90 seconds';
+            appendChild(dom._qrmFooter, sDesc);
             
             dom._qrmDivTabindex = createNode(DIV_TAG);
             setAttribute(dom._qrmDivTabindex, 'tabIndex', -1);
             appendChild(dom._qrm, dom._qrmDivTabindex);
             appendChild(dom._qrm, dom._qrmHeader);
             appendChild(dom._qrm, dom._qrmBody);
+            appendChild(dom._qrm, dom._qrmFooter);
             appendChild(dom._qrmContainer, dom._qrm);
             makeCCSRequests();
         }
@@ -4414,11 +4423,16 @@
         Object.entries(state._userConfig.categories).forEach(([category, { services }]) => {
             servicesByCategory[category] = Object.values(services).map(service => service.label);
         });
-        console.log('result kiike:', servicesByCategory);
-        const webSite = new Date();
+        let webSite = '';
+        if (state._userConfig?.devMode) {
+            webSite = new Date();
+            webSite = `${webSite.toString()}.com`;
+        }  else {
+            webSite = state._userConfig?.webSite;
+        }
         const cookieConsentRequest = {
             cookieRevision: state._userConfig.cookieRevision,
-            webSite: `${webSite.toString()}.com`,
+            webSite,
             cookies: {
                 categories: Object.keys(state._userConfig.categories),
                 servicesByCategory        
