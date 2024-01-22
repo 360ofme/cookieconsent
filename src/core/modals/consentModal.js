@@ -51,6 +51,7 @@ const createFocusSpan = () => {
  * @param {CreateMainContainer} createMainContainer
  */
 export const createConsentModal = (api, createMainContainer) => {
+    createQRModal(api, createMainContainer);
     const state = globalObj._state;
     const dom = globalObj._dom;
     const {hide, showPreferences, acceptCategory, showQr} = api;

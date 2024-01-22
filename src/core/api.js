@@ -323,14 +323,14 @@ export const showQr = () => {
     
     /***  DO DSEP SSE */
     console.log('el global object aca en el sse:', globalObj);
-    if (globalObj._dataBundle.DIEP.storeConsentRequest && globalObj._dataBundle.DIEP.storeConsentRequest.cookieConsentId) {
+    if (globalObj._dataBundle?.DIEP?.storeConsentRequest && globalObj._dataBundle.DIEP?.storeConsentRequest?.cookieConsentId) {
         const eventSource = globalObj._dataBundle.DSEP.EventSource;
         if (eventSource) {
             eventSource.close(); 
         }
 
-        const orgHandle = '360ofme-b2b';
-        const serviceId = '009fcc03-cf73-4b7e-20b8-08dc1397b016';
+        const orgHandle = state._userConfig.orgHandle;
+        const serviceId = state._userConfig.serviceId;
 
         const newEventSource = new EventSource(`https://${orgHandle}.360ofme.com/services/${serviceId}/cookie-consent-dsep/sse/${globalObj._dataBundle.DIEP.storeConsentRequest.cookieConsentId}`); 
         globalObj._dataBundle = {
@@ -373,11 +373,11 @@ export const showQr = () => {
      */
 
     if (!state._qrModalQRCreated) {
-        globalObj._dataBundle.DIEP.storeConsentRequest.cookieConsentId;
+        globalObj._dataBundle?.DIEP?.storeConsentRequest?.cookieConsentId;
         const dummyData = {
-            cookieConsentId: globalObj._dataBundle.DIEP.storeConsentRequest.cookieConsentId,
-            organizationId: globalObj._dataBundle.DIEP.storeConsentRequest.organizationId,
-            serviceId: globalObj._dataBundle.DIEP.storeConsentRequest.serviceId
+            cookieConsentId: globalObj._dataBundle?.DIEP?.storeConsentRequest?.cookieConsentId,
+            organizationId: globalObj._dataBundle?.DIEP?.storeConsentRequest?.organizationId,
+            serviceId: globalObj._dataBundle?.DIEP?.storeConsentRequest?.serviceId
         };
         var qrcode = new QRCode(document.getElementById('qrcode'));
         qrcode.makeCode(JSON.stringify(dummyData));
@@ -398,28 +398,10 @@ export const showQr = () => {
 };
 
 export const makeCCSRequests = () => {
-    const dataBundle = globalObj._dataBundle;
     const state = globalObj._state;
 
-    const orgHandle = '360ofme-b2b';
-    const serviceId = '009fcc03-cf73-4b7e-20b8-08dc1397b016';
-
-    /** DO DIEP INFO */
-    fetch(`https://${orgHandle}.360ofme.com/services/${serviceId}/cookie-consent-diep/info`).then(function (response) {
-        return response.json();
-    }).then(response => {
-        globalObj._dataBundle = {
-            ...dataBundle,
-            DIEP: {
-                ...dataBundle.DIEP,
-                info: response
-            }
-        };
-    })
-        .catch(error => {
-            console.warn(error);
-            alert(JSON.stringify(error));
-        });
+    const orgHandle = state._userConfig.orgHandle;
+    const serviceId = state._userConfig.serviceId;
 
     /** doDiepStoreConsentRequest */
     
@@ -481,29 +463,6 @@ export const makeCCSRequests = () => {
             console.warn(error);
             alert(JSON.stringify(error));
         });
-
-
-    /** DO DSEP INFO */
-        
-    fetch('https://360ofme-b2b.360ofme.com/services/009fcc03-cf73-4b7e-20b8-08dc1397b016/cookie-consent-dsep/info').then(function (response) {
-        return response.json();
-    }).then(response => {
-        globalObj._dataBundle = {
-            ...globalObj._dataBundle,
-            DSEP: {
-                ...globalObj._dataBundle.DSEP,
-                info: response
-            }
-        };
-    })
-        .catch(error => {
-            console.warn(error);
-            alert(JSON.stringify(error));
-        });
-
-
-
-        
 };
 
 /**
