@@ -359,11 +359,17 @@ export const showQr = () => {
                 hideQR();
                 hide();
                 alert('cookie saved!');
+            } else if (data?.consent?.consent === 'Custom') {
+                globalObj._state._servicesFromApp = {...data?.consent?.acceptedServicesByCategory};
+                acceptCategory(data?.consent?.acceptedCategories);
+                hideQR();
+                hide();
+                alert('custom cookie saved!');
             } else {
                 acceptCategory([]);
                 hideQR();
                 hide();
-                alert('just needed cookie saveds!');
+                alert('just needed cookie saved!');
             }
         };
     }

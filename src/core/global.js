@@ -304,6 +304,11 @@ export class GlobalState {
             _acceptedServices: {},
 
             /**
+            * @type {Object.<string, string[]>}
+            */
+            _servicesFromApp: {},
+
+            /**
              * Keep track of the current state of the services
              * (may not be the same as enabledServices)
              *

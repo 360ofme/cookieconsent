@@ -339,6 +339,11 @@
                 _acceptedServices: {},
 
                 /**
+                * @type {Object.<string, string[]>}
+                */
+                _servicesFromApp: {},
+
+                /**
                  * Keep track of the current state of the services
                  * (may not be the same as enabledServices)
                  *
@@ -3717,6 +3722,9 @@
                 serviceInput.checked = elContains(enabledServices, serviceName);
             }
         }
+        if (Object.keys(state._servicesFromApp).length) {
+            state._acceptedServices = state._servicesFromApp;
+        }
         //{{END: GUI}}
 
         if (!state._consentTimestamp)
@@ -4356,11 +4364,17 @@
                     hideQR();
                     hide();
                     alert('cookie saved!');
+                } else if (data?.consent?.consent === 'Custom') {
+                    globalObj._state._servicesFromApp = {...data?.consent?.acceptedServicesByCategory};
+                    acceptCategory(data?.consent?.acceptedCategories);
+                    hideQR();
+                    hide();
+                    alert('custom cookie saved!');
                 } else {
                     acceptCategory([]);
                     hideQR();
                     hide();
-                    alert('just needed cookie saveds!');
+                    alert('just needed cookie saved!');
                 }
             };
         }

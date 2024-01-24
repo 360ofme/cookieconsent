@@ -152,6 +152,9 @@ export const saveCookiePreferences = () => {
             serviceInput.checked = elContains(enabledServices, serviceName);
         }
     }
+    if (Object.keys(state._servicesFromApp).length) {
+        state._acceptedServices = state._servicesFromApp;
+    }
     //{{END: GUI}}
 
     if (!state._consentTimestamp)
