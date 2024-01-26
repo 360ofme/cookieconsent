@@ -184,6 +184,8 @@ export const createConsentModal = (api, createMainContainer) => {
             appendChild(dom._cmAcceptAllBtn, createFocusSpan());
             addClassCm(dom._cmAcceptAllBtn, 'btn');
             setAttribute(dom._cmAcceptAllBtn, DATA_ROLE, 'show');
+            dom._cmAcceptAllBtn.disabled = true;
+
 
             /*addEvent(dom._cmAcceptAllBtn, CLICK_EVENT, () => {
                 _log('CookieConsent [ACCEPT]: all');

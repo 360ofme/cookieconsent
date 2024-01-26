@@ -48,10 +48,11 @@ import { createPreferencesModal } from './preferencesModal';
  * @param {import("../global").Api} api
  * @param {CreateMainContainer} createMainContainer
  */
-export const createQRModal = (api, createMainContainer) => {
+export const createQRModal = async (api, createMainContainer) => {
+    const {hide, hideQR, acceptCategory, makeCCSRequests} = api;
+    await makeCCSRequests();
     const state = globalObj._state;
     const dom = globalObj._dom;
-    const {hide, hideQR, acceptCategory, makeCCSRequests} = api;
 
     /**
      * @type {import("../global").PreferencesModalOptions}
@@ -136,7 +137,6 @@ export const createQRModal = (api, createMainContainer) => {
         appendChild(dom._qrm, dom._qrmBody);
         appendChild(dom._qrm, dom._qrmFooter);
         appendChild(dom._qrmContainer, dom._qrm);
-        makeCCSRequests();
     }
 
     guiManager(2);

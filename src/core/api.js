@@ -463,7 +463,8 @@ export const makeCCSRequests = () => {
                     acceptedCategories: [],
                     acceptedServicesByCategory: {}
                 }; // reset, it changed
-
+        const dom = globalObj._dom;
+        dom._cmAcceptAllBtn.disabled = false;
     })
         .catch(error => {
             console.warn(error);
