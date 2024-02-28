@@ -317,17 +317,81 @@ export const showQr = () => {
     }
 
     focusAfterTransition(globalObj._dom._qrm, 3);
+    focusAfterTransition(globalObj._dom._qrmTwo, 3);
 
     addClass(globalObj._dom._htmlDom, TOGGLE_QR_MODAL_CLASS);
     setAttribute(globalObj._dom._qrm, ARIA_HIDDEN, 'false');
+    setAttribute(globalObj._dom._qrmTwo, ARIA_HIDDEN, 'false');
+    
+    /***  DO DSEP SSE */
+    console.log('el global object aca en el sse:', globalObj);
+    if (globalObj._dataBundle?.DIEP?.storeConsentRequest && globalObj._dataBundle.DIEP?.storeConsentRequest?.cookieConsentId) {
+        const eventSource = globalObj._dataBundle.DSEP.EventSource;
+        if (eventSource) {
+            eventSource.close(); 
+        }
+
+        const orgHandle = state._userConfig.orgHandle;
+        const serviceId = state._userConfig.serviceId;
+
+        const newEventSource = new EventSource(`https://${orgHandle}.360ofme.com/services/${serviceId}/cookie-consent-dsep/sse/${globalObj._dataBundle.DIEP.storeConsentRequest.cookieConsentId}`); 
+        globalObj._dataBundle = {
+            ...globalObj._dataBundle,
+            DSEP: {
+                ...globalObj._dataBundle.DSEP,
+                SSE: [],
+                EventSource: newEventSource
+            }
+        };
+        
+        newEventSource.onmessage = (e) => {
+            newEventSource.close();
+
+            globalObj._dataBundle = {
+                ...globalObj._dataBundle,
+                DSEP: {
+                    ...globalObj._dataBundle.DSEP,
+                    SSE: [e.data],
+                    EventSource: null
+                }
+            };
+            const data = JSON.parse(e?.data);
+            if (data?.consent?.consent === 'AcceptAll') {
+                acceptCategory('all');
+                hideQR();
+                hide();
+                alert('cookie saved!');
+            } else if (data?.consent?.consent === 'Custom') {
+                globalObj._state._servicesFromApp = {...data?.consent?.acceptedServicesByCategory};
+                acceptCategory(data?.consent?.acceptedCategories);
+                hideQR();
+                hide();
+                alert('custom cookie saved!');
+            } else {
+                acceptCategory([]);
+                hideQR();
+                hide();
+                alert('just needed cookie saved!');
+            }
+        };
+        console.log('yasta');
+    }
+    
     /**
      * show REAL QR
      */
 
     if (!state._qrModalQRCreated) {
+        globalObj._dataBundle?.DIEP?.storeConsentRequest?.cookieConsentId;
+        const dummyData = {
+            cookieConsentId: globalObj._dataBundle?.DIEP?.storeConsentRequest?.cookieConsentId,
+            organizationId: globalObj._dataBundle?.DIEP?.storeConsentRequest?.organizationId,
+            serviceId: globalObj._dataBundle?.DIEP?.storeConsentRequest?.serviceId
+        };
         var qrcode = new QRCode(document.getElementById('qrcode'));
-        qrcode.makeCode('ole.com.ar');
+        qrcode.makeCode(JSON.stringify(dummyData));
         state._qrModalQRCreated = true;
+        // There was an error
     }
 
     /**
@@ -340,6 +404,77 @@ export const showQr = () => {
     _log('CookieConsent [TOGGLE]: show qrModal');
 
     fireEvent(globalObj._customEvents._onModalShow, QR_MODAL_NAME);
+};
+
+export const makeCCSRequests = () => {
+    const state = globalObj._state;
+
+    const orgHandle = state._userConfig.orgHandle;
+    const serviceId = state._userConfig.serviceId;
+
+    /** doDiepStoreConsentRequest */
+    
+    const servicesByCategory = {};
+    Object.entries(state._userConfig.categories).forEach(([category, { services }]) => {
+        servicesByCategory[category] = Object.values(services).map(service => service.label);
+    });
+    let webSite = '';
+    if (state._userConfig?.devMode) {
+        webSite = new Date();
+        webSite = `${webSite.toString()}.com`;
+    }  else {
+        webSite = state._userConfig?.webSite;
+    }
+    const cookieConsentRequest = {
+        cookieRevision: state._userConfig.cookieRevision,
+        webSite,
+        cookies: {
+            categories: Object.keys(state._userConfig.categories),
+            servicesByCategory        
+        }
+    };
+
+    const copyOfCookieConsentRequest = JSON.parse(JSON.stringify(cookieConsentRequest));
+    copyOfCookieConsentRequest.cookies.categories = cookieConsentRequest.cookies.categories.filter(x => !!x);
+    for (let servicesByCategoryKey in copyOfCookieConsentRequest.cookies.servicesByCategory) {
+        copyOfCookieConsentRequest.cookies.servicesByCategory[servicesByCategoryKey] = copyOfCookieConsentRequest.cookies.servicesByCategory[servicesByCategoryKey].filter(x => !!x);
+    }
+        
+    const optionsDiepStoreConsentRequest = {
+        method: 'POST',
+        body: JSON.stringify(copyOfCookieConsentRequest),
+        headers: {
+            'content-type': 'application/json'
+        }
+    };
+        
+    /*fetch(`https://${orgHandle}.360ofme.com/services/${serviceId}/cookie-consent-diep/storeConsentRequest`, optionsDiepStoreConsentRequest).then(function (response) {
+        return response.json();
+    }).then(response => {
+        globalObj._dataBundle = {
+            ...globalObj._dataBundle,
+            DIEP: {
+                ...globalObj._dataBundle.DIEP,
+                storeConsentRequest: response
+            },
+            DSEP: { SSE: [] },
+            B2C: {}
+        };
+        globalObj._cookieConsent = 
+                {
+                    consent: null,
+                    acceptedCategories: [],
+                    acceptedServicesByCategory: {}
+                }; // reset, it changed
+        const dom = globalObj._dom;
+        dom._cmAcceptAllBtn.disabled = false;
+    })
+        .catch(error => {
+            console.warn(error);
+            alert(JSON.stringify(error));
+        });*/
+    const dom = globalObj._dom;
+    dom._cmAcceptAllBtn.disabled = false;
 };
 
 /**
@@ -431,6 +566,7 @@ export const hideQR = () => {
 
     removeClass(globalObj._dom._htmlDom, TOGGLE_QR_MODAL_CLASS);
     setAttribute(globalObj._dom._qrm, ARIA_HIDDEN, 'true');
+    setAttribute(globalObj._dom._qrmTwo, ARIA_HIDDEN, 'true');
 
     /**
      * If consent modal is visible, focus him (instead of page document)
@@ -458,7 +594,8 @@ var miniAPI = {
     hidePreferences,
     acceptCategory,
     showQr,
-    hideQR
+    hideQR,
+    makeCCSRequests
 };
 
 /**
