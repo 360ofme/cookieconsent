@@ -101,7 +101,7 @@ $service-toggle-knob-icon-width: 1.7px;
         overflow-y: overlay;
 
         .qrm__right-side {
-            width: 35%;
+            width: 43%;
             display: flex;
             flex-direction: column;
 
@@ -111,15 +111,35 @@ $service-toggle-knob-icon-width: 1.7px;
             }
 
             .qrm__right-step {
+                display: flex;
                 color: #000;
                 font-size: 16px;
                 font-style: normal;
-                font-weight: 300;
                 line-height: 24px;
+
+                .qrm__step-text {
+                    font-weight: 300;
+                    margin-right: 5px;
+                }
+
+                .qrm__step-text-bold {
+                    font-weight: 500;
+                }
+
+                .qrm__icon-div {
+                    justify-content: center;
+                    display: flex;
+                    align-items: center;
+                    width: 23px;
+                    height: 23px;
+                    background-color: #07958F;
+                    border-radius: 15px;
+                    margin: 0 3px;
+                }
             }
         }
         .qrm__left-side {
-            width: 65%;
+            width: 57%;
             display: flex;
             flex-direction: column;
 
@@ -174,9 +194,10 @@ $service-toggle-knob-icon-width: 1.7px;
             .qrm__left-step  {
                 display: flex;
                 margin-bottom: 19px;
-                width: 319px;
+                align-items: center;
 
                 .qrm__icon-div {
+                    margin-right: 15px;
                     justify-content: center;
                     display: flex;
                     align-items: center;
@@ -187,11 +208,20 @@ $service-toggle-knob-icon-width: 1.7px;
                 }
 
                 .qrm__step-text {
+                    width: 319px;
                     color: #000;
                     font-size: 12px;
                     font-style: normal;
                     font-weight: 400;
-                    line-height: 24px; /* 200% */
+                    line-height: 14px;
+                }
+            }
+
+            .qrm__stores {
+                display: flex;
+
+                .qrm__google-image {
+                    margin-right: 7px;
                 }
             }
         }

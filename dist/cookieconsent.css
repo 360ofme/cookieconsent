@@ -1664,7 +1664,7 @@ html.disable--interaction.show--consent, html.disable--interaction.show--consent
   overflow-y: overlay;
 }
 #cc-main .qrm__body .qrm__right-side {
-  width: 35%;
+  width: 43%;
   display: flex;
   flex-direction: column;
 }
@@ -1673,14 +1673,31 @@ html.disable--interaction.show--consent, html.disable--interaction.show--consent
   margin-bottom: 14px;
 }
 #cc-main .qrm__body .qrm__right-side .qrm__right-step {
+  display: flex;
   color: #000;
   font-size: 16px;
   font-style: normal;
-  font-weight: 300;
   line-height: 24px;
 }
+#cc-main .qrm__body .qrm__right-side .qrm__right-step .qrm__step-text {
+  font-weight: 300;
+  margin-right: 5px;
+}
+#cc-main .qrm__body .qrm__right-side .qrm__right-step .qrm__step-text-bold {
+  font-weight: 500;
+}
+#cc-main .qrm__body .qrm__right-side .qrm__right-step .qrm__icon-div {
+  justify-content: center;
+  display: flex;
+  align-items: center;
+  width: 23px;
+  height: 23px;
+  background-color: #07958F;
+  border-radius: 15px;
+  margin: 0 3px;
+}
 #cc-main .qrm__body .qrm__left-side {
-  width: 65%;
+  width: 57%;
   display: flex;
   flex-direction: column;
 }
@@ -1730,9 +1747,10 @@ html.disable--interaction.show--consent, html.disable--interaction.show--consent
 #cc-main .qrm__body .qrm__left-side .qrm__left-step {
   display: flex;
   margin-bottom: 19px;
-  width: 319px;
+  align-items: center;
 }
 #cc-main .qrm__body .qrm__left-side .qrm__left-step .qrm__icon-div {
+  margin-right: 15px;
   justify-content: center;
   display: flex;
   align-items: center;
@@ -1742,11 +1760,18 @@ html.disable--interaction.show--consent, html.disable--interaction.show--consent
   border-radius: 15px;
 }
 #cc-main .qrm__body .qrm__left-side .qrm__left-step .qrm__step-text {
+  width: 319px;
   color: #000;
   font-size: 12px;
   font-style: normal;
   font-weight: 400;
-  line-height: 24px; /* 200% */
+  line-height: 14px;
+}
+#cc-main .qrm__body .qrm__left-side .qrm__stores {
+  display: flex;
+}
+#cc-main .qrm__body .qrm__left-side .qrm__stores .qrm__google-image {
+  margin-right: 7px;
 }
 #cc-main .qrm__body-two {
   height: 200px;

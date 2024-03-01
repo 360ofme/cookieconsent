@@ -207,6 +207,22 @@ export const createQRModal = (api, createMainContainer) => {
         appendChild(dom._leftSide, dom.qrmLeftStepTwo);
         appendChild(dom._leftSide, dom.qrmLeftStepThree);
 
+        dom._stores = createNode(DIV_TAG);
+        addClassQrm(dom._stores, 'stores');
+        appendChild(dom._leftSide, dom._stores);
+
+        dom._google = createNode('img');
+        addClassQrm(dom._google, 'google-image');
+        const googleImage =  'data:image/png;base64,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';
+        dom._google.src = googleImage;
+        appendChild(dom._stores, dom._google);
+
+        dom._apple = createNode('img');
+        addClassQrm(dom._apple, 'apple-image');
+        const appleImage =  'data:image/png;base64,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';
+        dom._apple.src = appleImage;
+        appendChild(dom._stores, dom._apple);
+
         /////
 
         /// IU for right side
@@ -226,9 +242,41 @@ export const createQRModal = (api, createMainContainer) => {
         appendChild(dom.qrmRightStepOne, dom._qrmRightStepOneText);
 
         dom._qrmRightStepTwoText = createNode('p');
+        dom._qrmRightStepTwoBoldText = createNode('span');
+        dom._qrmScanIconContainer = createNode(DIV_TAG);
+        dom._qrmRightStepTwoText2 = createNode('p');
+        dom._qrmRightStepTwoBoldText2 = createNode('span');
+        dom._qrmQrIconContainer = createNode(DIV_TAG);
+
+        dom._qrmScanIcon = createNode('img');
+        const scanIcon =  'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAYAAADED76LAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAABZSURBVHgBjY5RDQAhDEO55ASchJMADpCAA3CMBSTgYLRkS/ZFaPJg0JISwo1EJIMOKmg6Zx8w81N2iN7LC+wDTBD1DedB78Hy49BdyMSK5CuaqyhWcffJkxZPhmJ6wguhqwAAAABJRU5ErkJggg==';
+        dom._qrmScanIcon.src = scanIcon;
+        appendChild(dom._qrmScanIconContainer, dom._qrmScanIcon);
+
+        dom._qrmQrIcon = createNode('img');
+        const qrIcon =  'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAYAAADED76LAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAADOSURBVHgBHY8xCoNAEEX/Sg6gYK+C2IqFtWth5SVS2QaPkBsEPEB6D2DtDdTWRgUrEVwrS5O/A8vuDm/ezAj8o6qqVxAEMooic9s27PuOcRznoijeoq7rZ9M03zAMIYTANE1wXRfDMCDP89aI49hlwrIsHMehofM8IaWE7/vywRamaUIppSuXZcE8zxp2HAcGga7reKHve50kQCPD4MfzPG2hmi2oT5JEA4/ruhQhAjx8t22L+75p6wWpsiw//4HCNE1h27Zec11XlWVZ+QPVQFmvCUg5wQAAAABJRU5ErkJggg==';
+        dom._qrmQrIcon.src = qrIcon;
+        appendChild(dom._qrmQrIconContainer, dom._qrmQrIcon);
+
+
         addClassQrm(dom._qrmRightStepTwoText, 'step-text');
-        dom._qrmRightStepTwoText.innerHTML = '2. Open Scanner then scan';
+        dom._qrmRightStepTwoText.innerHTML = '2. Open';
+        dom._qrmRightStepTwoBoldText.innerHTML = 'Scanner';
+        addClassQrm(dom._qrmRightStepTwoBoldText, 'step-text-bold');
+        addClassQrm(dom._qrmScanIconContainer, 'icon-div');
+        dom._qrmRightStepTwoText2.innerHTML = 'then';
+        addClassQrm(dom._qrmRightStepTwoText2, 'step-text');
+        dom._qrmRightStepTwoBoldText2.innerHTML = 'scan';
+        addClassQrm(dom._qrmRightStepTwoBoldText2, 'step-text-bold');
+        addClassQrm(dom._qrmQrIconContainer, 'icon-div');
+
         appendChild(dom.qrmRightStepTwo, dom._qrmRightStepTwoText);
+        appendChild(dom.qrmRightStepTwo, dom._qrmRightStepTwoBoldText);
+        appendChild(dom.qrmRightStepTwo, dom._qrmRightStepTwoBoldText);
+        appendChild(dom.qrmRightStepTwo, dom._qrmScanIconContainer);
+        appendChild(dom.qrmRightStepTwo, dom._qrmRightStepTwoText2);
+        appendChild(dom.qrmRightStepTwo, dom._qrmRightStepTwoBoldText2);
+        appendChild(dom.qrmRightStepTwo, dom._qrmQrIconContainer);
 
         appendChild(dom._rightSide, dom.qrmRightStepOne);
         appendChild(dom._rightSide, dom.qrmRightStepTwo);
