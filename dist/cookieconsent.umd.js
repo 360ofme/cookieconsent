@@ -3347,19 +3347,17 @@
          * @type {import("../global").ConsentModalOptions}
          */
         const consentModalData = {
-            acceptAllBtn: 'Use 360ofme',
+            acceptAllBtn: 'Accept All',
             acceptNecessaryBtn: 'Just neccesary',
-            description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip.',
-            footer: '<a href="#link">Privacy Policy</a>\n<a href="#link">Terms and conditions</a>',
-            showPreferencesBtn: 'Show Preferences',
-            title: 'Hello, it\'s cookie time!'
+            description: 'This website uses cookies. Cookies are pieces of text set by the website and stored in your browser, which are sent every time you access the website or a potential third party website. They are important for your privacy because they remember sensitive information about you can can be used to track your behavior and preferences. Click here to learn more about how 360ofme can protect your privacy.',
+            showPreferencesBtn: 'Custom',
+            title: 'Manage Your Cookies Consent'
         };
 
         const acceptAllBtnData = consentModalData.acceptAllBtn,
             acceptNecessaryBtnData = consentModalData.acceptNecessaryBtn,
             showPreferencesBtnData = consentModalData.showPreferencesBtn,
             closeIconLabelData = consentModalData.closeIconLabel,
-            footerData = consentModalData.footer,
             consentModalLabelValue = consentModalData.label,
             consentModalTitleValue = consentModalData.title;
 
@@ -3463,6 +3461,23 @@
             dom._cmDescription.innerHTML = description;
         }
 
+        if (!dom._cmUse360Btn) {
+            dom._cmUse360Btn = createNode(BUTTON_TAG);
+            appendChild(dom._cmUse360Btn, createFocusSpan());
+            addClassCm(dom._cmUse360Btn, 'btn');
+            addClassCm(dom._cmUse360Btn, 'btn-360');
+            setAttribute(dom._cmUse360Btn, DATA_ROLE, 'show');
+
+            addEvent(dom._cmUse360Btn, 'mouseenter', () => {
+                if (!state._qrModalExists) {
+                    createQRModal(api, createMainContainer);
+                }
+            });
+            addEvent(dom._cmUse360Btn, CLICK_EVENT, showQr);
+        }
+
+        dom._cmUse360Btn.firstElementChild.innerHTML = 'Manage with';
+
         {
             if (!dom._cmAcceptAllBtn) {
                 dom._cmAcceptAllBtn = createNode(BUTTON_TAG);
@@ -3470,17 +3485,10 @@
                 addClassCm(dom._cmAcceptAllBtn, 'btn');
                 setAttribute(dom._cmAcceptAllBtn, DATA_ROLE, 'show');
 
-                /*addEvent(dom._cmAcceptAllBtn, CLICK_EVENT, () => {
+                addEvent(dom._cmAcceptAllBtn, CLICK_EVENT, () => {
                     _log('CookieConsent [ACCEPT]: all');
                     acceptAndHide('all');
-                });*/
-
-                addEvent(dom._cmAcceptAllBtn, 'mouseenter', () => {
-                    if (!state._qrModalExists) {
-                        createQRModal(api, createMainContainer);
-                    }
                 });
-                addEvent(dom._cmAcceptAllBtn, CLICK_EVENT, showQr);
             }
 
             dom._cmAcceptAllBtn.firstElementChild.innerHTML = acceptAllBtnData;
@@ -3507,7 +3515,6 @@
                 dom._cmShowPreferencesBtn = createNode(BUTTON_TAG);
                 appendChild(dom._cmShowPreferencesBtn, createFocusSpan());
                 addClassCm(dom._cmShowPreferencesBtn, 'btn');
-                addClassCm(dom._cmShowPreferencesBtn, 'btn--secondary');
                 setAttribute(dom._cmShowPreferencesBtn, DATA_ROLE, 'show');
 
                 addEvent(dom._cmShowPreferencesBtn, 'mouseenter', () => {
@@ -3520,47 +3527,15 @@
             dom._cmShowPreferencesBtn.firstElementChild.innerHTML = showPreferencesBtnData;
         }
 
-        if (!dom._cmBtnGroup) {
-            dom._cmBtnGroup = createNode(DIV_TAG);
-            addClassCm(dom._cmBtnGroup, BTN_GROUP_CLASS);
 
-            appendChild(dom._cmBtnGroup, dom._cmAcceptAllBtn);
-            appendChild(dom._cmBtnGroup, dom._cmAcceptNecessaryBtn);
+        appendChild(dom._cmBtns, dom._cmAcceptAllBtn);
+        appendChild(dom._cmBtns, dom._cmAcceptNecessaryBtn);
 
-            appendChild(dom._cmBody, dom._cmBtnGroup);
-            appendChild(dom._cmBtns, dom._cmBtnGroup);
+        if (dom._cmShowPreferencesBtn) {
+            appendChild(dom._cmBtns, dom._cmShowPreferencesBtn);
         }
+        appendChild(dom._cmBtns, dom._cmUse360Btn);
 
-        if (dom._cmShowPreferencesBtn && !dom._cmBtnGroup2) {
-            dom._cmBtnGroup2 = createNode(DIV_TAG);
-
-            if ((!dom._cmAcceptNecessaryBtn || !dom._cmAcceptAllBtn)) {
-                appendChild(dom._cmBtnGroup, dom._cmShowPreferencesBtn);
-                addClassCm(dom._cmBtnGroup, BTN_GROUP_CLASS + '--uneven');
-            }else {
-                addClassCm(dom._cmBtnGroup2, BTN_GROUP_CLASS);
-                appendChild(dom._cmBtnGroup2, dom._cmShowPreferencesBtn);
-                appendChild(dom._cmBtns, dom._cmBtnGroup2);
-            }
-        }
-
-        {
-            if (!dom._cmFooterLinksGroup) {
-                let _consentModalFooter = createNode(DIV_TAG);
-                let _consentModalFooterLinks = createNode(DIV_TAG);
-                dom._cmFooterLinksGroup = createNode(DIV_TAG);
-
-                addClassCm(_consentModalFooter, 'footer');
-                addClassCm(_consentModalFooterLinks, 'links');
-                addClassCm(dom._cmFooterLinksGroup, 'link-group');
-
-                appendChild(_consentModalFooterLinks, dom._cmFooterLinksGroup);
-                appendChild(_consentModalFooter, _consentModalFooterLinks);
-                appendChild(dom._cm, _consentModalFooter);
-            }
-
-            dom._cmFooterLinksGroup.innerHTML = footerData;
-        }
 
         guiManager(0);
 
