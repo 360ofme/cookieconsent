@@ -53,7 +53,7 @@ const createFocusSpan = () => {
 export const createConsentModal = (api, createMainContainer) => {
     const state = globalObj._state;
     const dom = globalObj._dom;
-    const {hide, showPreferences, acceptCategory, showQr} = api;
+    const {hide, showPreferences, acceptCategory, showQr, makeCCSRequests} = api;
 
     /**
      * @type {import("../global").ConsentModalOptions}
@@ -83,6 +83,7 @@ export const createConsentModal = (api, createMainContainer) => {
 
     // Create modal if it doesn't exist
     if (!dom._cmContainer) {
+        makeCCSRequests();
         dom._cmContainer = createNode(DIV_TAG);
         dom._cm = createNode(DIV_TAG);
         dom._cmBody = createNode(DIV_TAG);
@@ -176,8 +177,13 @@ export const createConsentModal = (api, createMainContainer) => {
     }
 
     if (!dom._cmUse360Btn) {
+        dom._buttonImage = createNode('img');
+        const imageDataLogo = 'data:image/png;base64,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';
+        dom._buttonImage.src = imageDataLogo; // Set the source path of the image
+ 
         dom._cmUse360Btn = createNode(BUTTON_TAG);
         appendChild(dom._cmUse360Btn, createFocusSpan());
+        appendChild(dom._cmUse360Btn, dom._buttonImage);
         addClassCm(dom._cmUse360Btn, 'btn');
         addClassCm(dom._cmUse360Btn, 'btn-360');
         setAttribute(dom._cmUse360Btn, DATA_ROLE, 'show');

@@ -146,6 +146,17 @@ export class GlobalState {
             */
             _currentTranslation: {},
 
+            _dataBundle: {
+                DIEP: {},
+                DSEP: { SSE: [] },
+                B2C: {}
+            },
+
+            _cookieConsent: {
+                consent: null,
+                acceptedCategories: [],
+                acceptedServicesByCategory: {}
+            },
             /**
             * Internal state variables
             * @type {CookieValue}
