@@ -51,7 +51,7 @@ import { createPreferencesModal } from './preferencesModal';
 export const createQRModal = (api, createMainContainer) => {
     const state = globalObj._state;
     const dom = globalObj._dom;
-    const {hide, hideQR} = api;
+    const {hideQR} = api;
     const consentModalTitleValue = 'Scan QR';
     /**
      * @type {import("../global").PreferencesModalOptions}

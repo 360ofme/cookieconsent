@@ -561,6 +561,11 @@ declare namespace CookieConsent {
     function showQr(): void
 
     /**
+     * Make cookie consent requests
+     */
+    function makeCCSRequests(): void
+
+    /**
      * Hide the preferencesModal.
      */
     function hidePreferences(): void

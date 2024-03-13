@@ -324,9 +324,8 @@ export const showQr = () => {
     setAttribute(globalObj._dom._qrmTwo, ARIA_HIDDEN, 'false');
     
     /***  DO DSEP SSE */
-    console.log('el global object aca en el sse:', globalObj);
-    if (globalObj._dataBundle?.DIEP?.storeConsentRequest && globalObj._dataBundle.DIEP?.storeConsentRequest?.cookieConsentId) {
-        const eventSource = globalObj._dataBundle.DSEP.EventSource;
+    if (globalObj._state._dataBundle?.DIEP?.storeConsentRequest && globalObj._state._dataBundle.DIEP?.storeConsentRequest?.cookieConsentId) {
+        const eventSource = globalObj._state._dataBundle.DSEP.EventSource;
         if (eventSource) {
             eventSource.close(); 
         }
@@ -334,11 +333,11 @@ export const showQr = () => {
         const orgHandle = state._userConfig.orgHandle;
         const serviceId = state._userConfig.serviceId;
 
-        const newEventSource = new EventSource(`https://${orgHandle}.360ofme.com/services/${serviceId}/cookie-consent-dsep/sse/${globalObj._dataBundle.DIEP.storeConsentRequest.cookieConsentId}`); 
-        globalObj._dataBundle = {
-            ...globalObj._dataBundle,
+        const newEventSource = new EventSource(`https://${orgHandle}.360ofme.com/services/${serviceId}/cookie-consent-dsep/sse/${globalObj._state._dataBundle.DIEP.storeConsentRequest.cookieConsentId}`); 
+        globalObj._state._dataBundle = {
+            ...globalObj._state._dataBundle,
             DSEP: {
-                ...globalObj._dataBundle.DSEP,
+                ...globalObj._state._dataBundle.DSEP,
                 SSE: [],
                 EventSource: newEventSource
             }
@@ -347,10 +346,10 @@ export const showQr = () => {
         newEventSource.onmessage = (e) => {
             newEventSource.close();
 
-            globalObj._dataBundle = {
-                ...globalObj._dataBundle,
+            globalObj._state._dataBundle = {
+                ...globalObj._state._dataBundle,
                 DSEP: {
-                    ...globalObj._dataBundle.DSEP,
+                    ...globalObj._state._dataBundle.DSEP,
                     SSE: [e.data],
                     EventSource: null
                 }
@@ -374,7 +373,6 @@ export const showQr = () => {
                 alert('just needed cookie saved!');
             }
         };
-        console.log('yasta');
     }
     
     /**
@@ -382,14 +380,15 @@ export const showQr = () => {
      */
 
     if (!state._qrModalQRCreated) {
-        globalObj._dataBundle?.DIEP?.storeConsentRequest?.cookieConsentId;
-        const dummyData = {
-            cookieConsentId: globalObj._dataBundle?.DIEP?.storeConsentRequest?.cookieConsentId,
-            organizationId: globalObj._dataBundle?.DIEP?.storeConsentRequest?.organizationId,
-            serviceId: globalObj._dataBundle?.DIEP?.storeConsentRequest?.serviceId
+        globalObj._state._dataBundle?.DIEP?.storeConsentRequest?.cookieConsentId;
+        const qrCodeData = {
+            serviceInstanceId: state._userConfig?.serviceInstanceId,
+            cookieConsentId: globalObj._state._dataBundle?.DIEP?.storeConsentRequest?.cookieConsentId,
+            organizationId: globalObj._state._dataBundle?.DIEP?.storeConsentRequest?.organizationId,
+            serviceId: globalObj._state._dataBundle?.DIEP?.storeConsentRequest?.serviceId
         };
         var qrcode = new QRCode(document.getElementById('qrcode'));
-        qrcode.makeCode(JSON.stringify(dummyData));
+        qrcode.makeCode(JSON.stringify(qrCodeData));
         state._qrModalQRCreated = true;
         // There was an error
     }
@@ -447,14 +446,14 @@ export const makeCCSRequests = () => {
             'content-type': 'application/json'
         }
     };
-        
-    /*fetch(`https://${orgHandle}.360ofme.com/services/${serviceId}/cookie-consent-diep/storeConsentRequest`, optionsDiepStoreConsentRequest).then(function (response) {
+
+    fetch(`https://${orgHandle}.360ofme.com/services/${serviceId}/cookie-consent-diep/storeConsentRequest`, optionsDiepStoreConsentRequest).then(function (response) {
         return response.json();
     }).then(response => {
-        globalObj._dataBundle = {
-            ...globalObj._dataBundle,
+        globalObj._state._dataBundle = {
+            ...globalObj._state._dataBundle,
             DIEP: {
-                ...globalObj._dataBundle.DIEP,
+                ...globalObj._state._dataBundle.DIEP,
                 storeConsentRequest: response
             },
             DSEP: { SSE: [] },
@@ -472,9 +471,9 @@ export const makeCCSRequests = () => {
         .catch(error => {
             console.warn(error);
             alert(JSON.stringify(error));
-        });*/
-    const dom = globalObj._dom;
-    dom._cmAcceptAllBtn.disabled = false;
+        });
+    //const dom = globalObj._dom;
+    //dom._cmAcceptAllBtn.disabled = false;
 };
 
 /**
