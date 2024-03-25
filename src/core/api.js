@@ -380,9 +380,8 @@ export const showQr = () => {
      */
 
     if (!state._qrModalQRCreated) {
-        globalObj._state._dataBundle?.DIEP?.storeConsentRequest?.cookieConsentId;
         const qrCodeData = {
-            serviceInstanceId: state._userConfig?.serviceInstanceId,
+            serviceInstanceId: globalObj._state._dataBundle?.DIEP?.storeConsentRequest?.serviceInstanceId,
             cookieConsentId: globalObj._state._dataBundle?.DIEP?.storeConsentRequest?.cookieConsentId,
             organizationId: globalObj._state._dataBundle?.DIEP?.storeConsentRequest?.organizationId,
             serviceId: globalObj._state._dataBundle?.DIEP?.storeConsentRequest?.serviceId
@@ -390,7 +389,6 @@ export const showQr = () => {
         var qrcode = new QRCode(document.getElementById('qrcode'));
         qrcode.makeCode(JSON.stringify(qrCodeData));
         state._qrModalQRCreated = true;
-        // There was an error
     }
 
     /**
@@ -470,7 +468,7 @@ export const makeCCSRequests = () => {
     })
         .catch(error => {
             console.warn(error);
-            alert(JSON.stringify(error));
+            alert('The Cookie Consent Service is not available');
         });
     //const dom = globalObj._dom;
     //dom._cmAcceptAllBtn.disabled = false;
