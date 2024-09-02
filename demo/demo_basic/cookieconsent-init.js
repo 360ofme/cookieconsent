@@ -48,6 +48,15 @@ CookieConsent.run({
                     }
                 ]
             }
+        },
+        geolocation: {
+            autoClear: {
+                cookies: [
+                    {
+                        name: /^(_gm|_am)/
+                    }
+                ]
+            }
         }
     },
 
@@ -84,7 +93,13 @@ CookieConsent.run({
                             title: 'Performance and analytics cookies',
                             description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
                             linkedCategory: 'analytics'
-                        }, {
+                        },
+                        {
+                            title: 'Geolocation',
+                            description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+                            linkedCategory: 'geolocation'
+                        }, 
+                        {
                             title: 'More information',
                             description: 'For any queries in relation to our policy on cookies and your choices, please <a class="cc__link" href="#yourdomain.com">contact me</a>.',
                         }
